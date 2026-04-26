@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Unity.InferenceEngine;
 using Cysharp.Threading.Tasks;
+using System.Threading;
 
 //未実装は'***'で表記
 
@@ -183,10 +184,10 @@ public class CPUManager : PlayerBase
         if (isStart)
         {
             //ターゲット位置を設定する
-            SetTargetPosition().Forget();
+            SetTargetPosition(cts.Token).Forget();
         }
     }
-    protected virtual async UniTaskVoid SetTargetPosition() //ターゲット位置を設定するメソッド
+    protected virtual async UniTaskVoid SetTargetPosition(CancellationToken cancellationToken) //ターゲット位置を設定するメソッド
     {
         // Tensorに変換 追加書き込みできないため毎回新規作成
         using Tensor<float> inputField = new Tensor<float>(new TensorShape(1, 6, 16), stageAtomF);
@@ -210,7 +211,7 @@ public class CPUManager : PlayerBase
         worker.SetInput("disturber_num", inputDisturberNum);
         //行動の推測
         worker.Schedule();
-        await UniTask.Delay(30);
+        await UniTask.Delay(30, cancellationToken: cancellationToken); //推論の待機、環境によっては必要
         using Tensor<int> output = worker.PeekOutput() as Tensor<int>; //行動のピークを取得
         //Tensor outputs = new Tensor<int>(new TensorShape(1, 24)); //解放が必要、また使用時は型変換が必要
         //worker.CopyOutput("action_values", ref outputs); //行動の配列を取得
@@ -264,9 +265,9 @@ public class CPUManager : PlayerBase
         //    }
         //}
     }
-    void OnDestroy()
+    protected override void OnDestroy()
     {
-        worker.Dispose();
+        base.OnDestroy();
+        worker?.Dispose();
     }
 }
-

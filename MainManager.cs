@@ -6,6 +6,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.SceneManagement;
 //未実装は'***'で表記
 
 public class MainManager : MonoBehaviour
@@ -137,15 +138,15 @@ public class MainManager : MonoBehaviour
     #region プロパティ
     public State CurrentState //現在の状態を取得または設定するプロパティ
     {
-        get 
+        get
         {
-            return currentState; 
+            return currentState;
         }
-        private set 
-        { 
-            if(currentState == value) return; //状態が変わらない場合は何もしない
-            currentState = value; 
-            switch(currentState)
+        private set
+        {
+            if (currentState == value) return; //状態が変わらない場合は何もしない
+            currentState = value;
+            switch (currentState)
             {
                 case State.Ready:
                     // Ready状態の処理
@@ -207,7 +208,7 @@ public class MainManager : MonoBehaviour
     } //ゲームの状態を管理する列挙型
     public enum AtomType
     {
-        H, 
+        H,
         Cl,
         Br,
         F,
@@ -216,7 +217,7 @@ public class MainManager : MonoBehaviour
         S,
         N,
         P,
-        C,  
+        C,
         K,
         Na,
         Ba,
@@ -253,7 +254,7 @@ public class MainManager : MonoBehaviour
     {
         //ゲームの初期化
         Init();
-        for(int i = 0; i < players.Length; i++)
+        for (int i = 0; i < players.Length; i++)
         {
             players[i].Start0(i); // プレイヤーの初期化
         }
@@ -269,7 +270,7 @@ public class MainManager : MonoBehaviour
                 foreach (var player in players)
                 {
                     player.ReadyAtom(); //原子をセット
-                }   
+                }
                 break;
             case State.Play:
                 // Play状態の処理
@@ -316,7 +317,7 @@ public class MainManager : MonoBehaviour
             atomCount -= atomWeight[j];
         }
     }
-    public void CalcPoint(ref PointSet pointSet, int atomCount,　int formulaPoint, int chainCount, int comboCount) //得点の計算
+    public void CalcPoint(ref PointSet pointSet, int atomCount, int formulaPoint, int chainCount, int comboCount) //得点の計算
     {
         //得点の計算
         chainCount = Mathf.Min(chainCount, ChainPointRatesLength - 1); //連鎖数を更新
@@ -326,11 +327,23 @@ public class MainManager : MonoBehaviour
         pointSet.ChainRate = chainPointRates[chainCount]; //連鎖数に応じた倍率
         pointSet.ComboRate = comboPointRates[comboCount]; //コンボ数に応じた倍率
         pointSet.Point = atomCount * formulaPoint * pointSet.ChainRate * pointSet.ComboRate; //得点を計算
-    } 
+    }
     public void PassDisturbance(int num, PlayerBase player, Vector3 center)
     {
         if (players[0] == player) players[1].GotDisturbanceNumber(num, center).Forget(); //プレイヤー1のじゃま原子数を設定
         else players[0].GotDisturbanceNumber(num, center).Forget(); //プレイヤー0のじゃま原子数を設定 
+    }
+    public void InstantiateDisturbance()
+    {
+        AtomObject atomObject = Instantiate(atomPrefab, stockAtoms.transform); //原子をインスタンス化
+        atomObject.Set(disturbanceAtomColor, disturbanceAtom);
+        atomObject.UnEnabled();
+        atomObject.transform.localScale *= DisturbancAtomsSize; //おじゃま原子のサイズを変更
+        DisturbanceAtomObjects.Add(atomObject);
+    }
+    public void GameOver(PlayerBase player)
+    {
+        SceneManager.LoadScene("Main"); //ゲームオーバー時にシーンをリロード
     }
     #endregion 公開メソッド
 
@@ -365,14 +378,6 @@ public class MainManager : MonoBehaviour
             InstantiateDisturbance();
         }
     }
-    public void InstantiateDisturbance()
-    {
-        AtomObject atomObject = Instantiate(atomPrefab, stockAtoms.transform); //原子をインスタンス化
-        atomObject.Set(disturbanceAtomColor, disturbanceAtom);
-        atomObject.UnEnabled();
-        atomObject.transform.localScale *= DisturbancAtomsSize; //おじゃま原子のサイズを変更
-        DisturbanceAtomObjects.Add(atomObject);
-    }
     private void WeightPerLevel(in int[] atomCount)
     {
         atomWeight = new int[(int)AtomType.None];
@@ -394,7 +399,7 @@ public class MainManager : MonoBehaviour
                     _ => 1,
                 };
             }
-            else if(Level == 1)
+            else if (Level == 1)
             {
                 atomWeight[i] = atomCount[i] switch
                 {
@@ -431,7 +436,7 @@ public class MainManager : MonoBehaviour
         {
             CurrentState = State.Play;
         }
-        else if(CurrentState == State.Play)
+        else if (CurrentState == State.Play)
         {
             CurrentState = State.Pause;
         }
@@ -455,7 +460,7 @@ public class MainManager : MonoBehaviour
         // Play状態の処理
         gameTime += Time.deltaTime; //ゲーム時間を更新
         updateDropCount += Time.deltaTime;
-        if(updateDropCount >= updateDropTime)
+        if (updateDropCount >= updateDropTime)
         {
             dropTime *= updateDropTimeRate;
             updateDropCount -= updateDropTime;

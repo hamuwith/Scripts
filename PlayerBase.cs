@@ -9,121 +9,121 @@ using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using System.Text;
 using UnityEngine.Pool;
-//–¢À‘•‚Í'***'‚Å•\‹L
+//æœªå®Ÿè£…ã¯'***'ã§è¡¨è¨˜
 
 public class PlayerBase : MonoBehaviour
 {
-    #region ƒVƒŠƒAƒ‰ƒCƒYƒtƒB[ƒ‹ƒh
-    [SerializeField] TextMeshProUGUI countdownText; //ƒJƒEƒ“ƒgƒ_ƒEƒ“—p‚ÌƒeƒLƒXƒg
-    [SerializeField] TextMeshProUGUI formulaText; //‰»Šw®ƒeƒLƒXƒg
-    [SerializeField] TextMeshProUGUI chemicalText; //‰»Šw®ƒeƒLƒXƒg
-    [SerializeField] TextMeshProUGUI pointText; //“¾“_ƒeƒLƒXƒg
-    [SerializeField] TextMeshProUGUI formulaPointText; //Še“¾“_ƒeƒLƒXƒg
-    [SerializeField] Vector2 leftBottomPosition ;//¶‰º‚ÌˆÊ’u
-    [SerializeField] Vector2[] nextAtomsPosition; //Ÿ‚ÌŒ´q‚ÌˆÊ’u
-    [SerializeField] Vector3 disturbancAtomPosition; //‚¶‚á‚ÜŒ´q‚ÌˆÊ’u
-    #endregion ƒVƒŠƒAƒ‰ƒCƒYƒtƒB[ƒ‹ƒh
+    #region ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+    [SerializeField] TextMeshProUGUI countdownText; //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ç”¨ã®ãƒ†ã‚­ã‚¹ãƒˆ
+    [SerializeField] TextMeshProUGUI formulaText; //åŒ–å­¦å¼ãƒ†ã‚­ã‚¹ãƒˆ
+    [SerializeField] TextMeshProUGUI chemicalText; //åŒ–å­¦å¼ãƒ†ã‚­ã‚¹ãƒˆ
+    [SerializeField] TextMeshProUGUI pointText; //å¾—ç‚¹ãƒ†ã‚­ã‚¹ãƒˆ
+    [SerializeField] TextMeshProUGUI formulaPointText; //å„å¾—ç‚¹ãƒ†ã‚­ã‚¹ãƒˆ
+    [SerializeField] Vector2 leftBottomPosition;//å·¦ä¸‹ã®ä½ç½®
+    [SerializeField] Vector2[] nextAtomsPosition; //æ¬¡ã®åŸå­ã®ä½ç½®
+    [SerializeField] Vector3 disturbancAtomPosition; //ã˜ã‚ƒã¾åŸå­ã®ä½ç½®
+    #endregion ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ƒvƒ‰ƒCƒx[ƒgƒtƒB[ƒ‹ƒh
-    Vector3 formulaStart; //‰»Šw®•\¦‰ŠúˆÊ’u
-    Vector3 chemicalStart; //‰»Šw®•\¦‰ŠúˆÊ’u
-    protected AtomObject[] nextAtoms; //Ÿ‚ÌŒ´q‚ğŠÇ—‚·‚é”z—ñ
-    protected PlayState playState; //ƒvƒŒƒC‚Ìó‹µ
-    protected AtomObject[] currentAtoms; //Œ»İ‚ÌŒ´q‚ğŠÇ—‚·‚é”z—ñ
-    protected Vector2Int[] currentAtomPositions; //Œ»İ‚ÌŒ´q‚ÌˆÊ’u
-    int point; //ƒvƒŒƒCƒ„[‚Ì“¾“_
-    int chainCount; //˜A½”
-    int comboCount; //ƒRƒ“ƒ{”
-    AtomObject[,] stageAtom; //Œ´q‚ÌˆÊ’u‚ğŠÇ—‚·‚é”z—ñ
-    protected float[] stageAtomF; //Œ´q”Ô†‚ÌˆÊ’u‚ğŠÇ—‚·‚é”z—ñ
-    Vector2Int[] dropVector2Ints; //ƒhƒƒbƒv•\¦ˆÊ’u
-    protected int[] dropAtomYs; //ˆê”Ôã‚ÌŒ´q
-    List<Vector2Int> checkBuffer; //’T¸’†Œ´qƒoƒbƒtƒ@
-    Dictionary<FormulaObject, HashSet<Vector2Int>> atomObjectHashs; //‘µ‚Á‚½Œ´q‚ÌƒŠƒXƒg
-    Queue<AtomType> atomsQueue; //ƒLƒ…[ƒyƒAŒ´q
-    float dropCount; //—‰ºƒJƒEƒ“ƒg
-    int disturbancStartX; //‚¶‚á‚ÜƒXƒ^[ƒgˆÊ’u
-    CancellationTokenSource cts; //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“
-    SpriteRenderer[] dropPoints; //—‰º’n“_ƒIƒuƒWƒFƒNƒg
-    PointSet pointSet = new PointSet(); //“¾“_‚ğŠÇ—‚·‚é
-    ObjectPool<AtomObject> atomObjectPool; //Œ´q‚Ìƒv[ƒ‹
-    StringBuilder stringBuilder; //ƒeƒLƒXƒg
-    Vector2Int[] vector2Ints; //ˆÚ“®—Ê
-    int passTotalDisturbanceNumber; //“n‚µ‚½‚¶‚á‚ÜŒ´q”
-    protected int gotDisturbanceNumber; //æ“¾‚µ‚½‚¶‚á‚ÜŒ´q”
-    #endregion ƒvƒ‰ƒCƒx[ƒgƒtƒB[ƒ‹ƒh
+    #region ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+    Vector3 formulaStart; //åŒ–å­¦å¼è¡¨ç¤ºåˆæœŸä½ç½®
+    Vector3 chemicalStart; //åŒ–å­¦å¼è¡¨ç¤ºåˆæœŸä½ç½®
+    protected AtomObject[] nextAtoms; //æ¬¡ã®åŸå­ã‚’ç®¡ç†ã™ã‚‹é…åˆ—
+    protected PlayState playState; //ãƒ—ãƒ¬ã‚¤ã®çŠ¶æ³
+    protected AtomObject[] currentAtoms; //ç¾åœ¨ã®åŸå­ã‚’ç®¡ç†ã™ã‚‹é…åˆ—
+    protected Vector2Int[] currentAtomPositions; //ç¾åœ¨ã®åŸå­ã®ä½ç½®
+    int point; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å¾—ç‚¹
+    int chainCount; //é€£é–æ•°
+    int comboCount; //ã‚³ãƒ³ãƒœæ•°
+    AtomObject[,] stageAtom; //åŸå­ã®ä½ç½®ã‚’ç®¡ç†ã™ã‚‹é…åˆ—
+    protected float[] stageAtomF; //åŸå­ç•ªå·ã®ä½ç½®ã‚’ç®¡ç†ã™ã‚‹é…åˆ—
+    Vector2Int[] dropVector2Ints; //ãƒ‰ãƒ­ãƒƒãƒ—è¡¨ç¤ºä½ç½®
+    protected int[] dropAtomYs; //ä¸€ç•ªä¸Šã®åŸå­
+    List<Vector2Int> checkBuffer; //æ¢æŸ»ä¸­åŸå­ãƒãƒƒãƒ•ã‚¡
+    Dictionary<FormulaObject, HashSet<Vector2Int>> atomObjectHashs; //æƒã£ãŸåŸå­ã®ãƒªã‚¹ãƒˆ
+    Queue<AtomType> atomsQueue; //ã‚­ãƒ¥ãƒ¼ãƒšã‚¢åŸå­
+    float dropCount; //è½ä¸‹ã‚«ã‚¦ãƒ³ãƒˆ
+    int disturbancStartX; //ã˜ã‚ƒã¾ã‚¹ã‚¿ãƒ¼ãƒˆä½ç½®
+    protected CancellationTokenSource cts; //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³
+    SpriteRenderer[] dropPoints; //è½ä¸‹åœ°ç‚¹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+    PointSet pointSet = new PointSet(); //å¾—ç‚¹ã‚’ç®¡ç†ã™ã‚‹
+    ObjectPool<AtomObject> atomObjectPool; //åŸå­ã®ãƒ—ãƒ¼ãƒ«
+    StringBuilder stringBuilder; //ãƒ†ã‚­ã‚¹ãƒˆ
+    Vector2Int[] vector2Ints; //ç§»å‹•é‡
+    int passTotalDisturbanceNumber; //æ¸¡ã—ãŸã˜ã‚ƒã¾åŸå­æ•°
+    protected int gotDisturbanceNumber; //å–å¾—ã—ãŸã˜ã‚ƒã¾åŸå­æ•°
+    #endregion ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ƒvƒƒeƒNƒgƒtƒB[ƒ‹ƒh
-    /// <summary> ƒƒCƒ“ƒ}ƒl[ƒWƒƒ[ </summary>
-    protected MainManager M { get; private set; } //ƒƒCƒ“ƒ}ƒl[ƒWƒƒ[
-    #endregion ƒvƒƒeƒNƒgƒtƒB[ƒ‹ƒh
+    #region ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+    /// <summary> ãƒ¡ã‚¤ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ </summary>
+    protected MainManager M { get; private set; } //ãƒ¡ã‚¤ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
+    #endregion ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ’è”
-    const int displayUpper = 12; //ƒXƒe[ƒW‚Ì•\¦Å‘å‚‚³
-    readonly Color countdownTextColor = Color.white; //ƒJƒEƒ“ƒgƒ_ƒEƒ“ƒeƒLƒXƒgƒJƒ‰[
-    #endregion ’è”
+    #region å®šæ•°
+    const int displayUpper = 12; //ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¡¨ç¤ºæœ€å¤§é«˜ã•
+    readonly Color countdownTextColor = Color.white; //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚«ãƒ©ãƒ¼
+    #endregion å®šæ•°
 
-    #region ƒvƒƒpƒeƒB    
-    #endregion ƒvƒƒpƒeƒB
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+    #endregion ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
-    #region —ñ‹“‘Ì
-    protected enum PlayState //ƒvƒŒƒC‘JˆÚ
+    #region åˆ—æŒ™ä½“
+    protected enum PlayState //ãƒ—ãƒ¬ã‚¤é·ç§»
     {
         None,
         Move,
         NoMove,
         GameOver,
     }
-    public enum Direction //•ûŒü
+    public enum Direction //æ–¹å‘
     {
         Right,
         Left,
         Down,
         None,
     }
-    public enum RotationInfo //‰ñ“]î•ñ
+    public enum RotationInfo //å›è»¢æƒ…å ±
     {
         Top,
         Right,
         Down,
         Left,
     }
-    #endregion —ñ‹“‘Ì
+    #endregion åˆ—æŒ™ä½“
 
-    #region ŒöŠJƒƒ\ƒbƒh
-    public virtual void Start0(int id) //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»‚ğs‚¤ƒƒ\ƒbƒh
+    #region å…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
+    public virtual void Start0(int id) //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–ã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        M = Instance; //MainManager‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾
-        //ƒQ[ƒ€‚Ì‰Šú‰»
+        M = Instance; //MainManagerã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’å–å¾—
+        //ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–
         Init();
     }
-    public void ReadyAtom() //Œ´q‚Ì€”õ
+    public void ReadyAtom() //åŸå­ã®æº–å‚™
     {
-        //Ÿ‚ÌŒ´q‚Ü‚Å‚ğƒZƒbƒg
+        //æ¬¡ã®åŸå­ã¾ã§ã‚’ã‚»ãƒƒãƒˆ
         if (nextAtoms[0] == null)
         {
-            SetAtoms(false); //Œ´q‚ğƒZƒbƒg
+            SetAtoms(false); //åŸå­ã‚’ã‚»ãƒƒãƒˆ
         }
     }
-    public void UpdatePlayState() //Playó‘Ô‚Ìˆ—‚ğs‚¤ƒƒ\ƒbƒh
+    public void UpdatePlayState() //PlayçŠ¶æ…‹ã®å‡¦ç†ã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
     {
         if (playState == PlayState.Move) PlayMove();
     }
-    public AtomObject SetAtom(AtomType atomType, PlayerBase player) //Œ»İŒ´q‚ğƒZƒbƒg
+    public AtomObject SetAtom(AtomType atomType, PlayerBase player) //ç¾åœ¨åŸå­ã‚’ã‚»ãƒƒãƒˆ
     {
         //AtomObject atomObject = atomObjects.First(x => x.IsExist == false);
         AtomObject atomObject = atomObjectPool.Get();
-        var atomGroup = AtomGroupHelper.atomGroups[atomType]; //Œ´q‚ÌƒOƒ‹[ƒv‚ğæ“¾
+        var atomGroup = AtomGroupHelper.atomGroups[atomType]; //åŸå­ã®ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å–å¾—
         atomObject.Set(GetAtomColor(atomType), atomType);
-        atomObject.transform.parent = player.transform; //e‚ğƒvƒŒƒCƒ„[‚Éİ’è
+        atomObject.transform.parent = player.transform; //è¦ªã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¨­å®š
         return atomObject;
     }
-    public void SetPoint(int atomCount, int formulaPoint, int chainCount, int comboCount) //“¾“_‚ÌŒvZ
+    public void SetPoint(int atomCount, int formulaPoint, int chainCount, int comboCount) //å¾—ç‚¹ã®è¨ˆç®—
     {
         M.CalcPoint(ref pointSet, atomCount, formulaPoint, chainCount, comboCount);
         point += pointSet.Point;
     }
-    public async UniTaskVoid GotDisturbanceNumber(int num, Vector3 center) //‚¶‚á‚ÜŒ´q‚ğƒZƒbƒg‚·‚éƒƒ\ƒbƒh
+    public async UniTaskVoid GotDisturbanceNumber(int num, Vector3 center) //ã˜ã‚ƒã¾åŸå­ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         Vector3 vector3 = disturbancAtomPosition;
         Tween tween = null;
@@ -137,8 +137,8 @@ public class PlayerBase : MonoBehaviour
         for (int i = startIndex; i < endIndex; i++)
         {
             if (M.DisturbanceAtomObjects.Count <= i) M.InstantiateDisturbance();
-            M.DisturbanceAtomObjects[i].Enabled(); //‚¶‚á‚ÜŒ´q‚ğ’Ç‰Á
-            M.DisturbanceAtomObjects[i].transform.parent = transform; //e‚ğƒvƒŒƒCƒ„[‚Éİ’è
+            M.DisturbanceAtomObjects[i].Enabled(); //ã˜ã‚ƒã¾åŸå­ã‚’è¿½åŠ 
+            M.DisturbanceAtomObjects[i].transform.parent = transform; //è¦ªã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¨­å®š
             M.DisturbanceAtomObjects[i].transform.position = center;
             tween = M.DisturbanceAtomObjects[i].transform.DOLocalMove(vector3, 0.5f);
             vector3.x += M.DisturbancAtomsSize;
@@ -154,42 +154,42 @@ public class PlayerBase : MonoBehaviour
             }
         }
     }
-    #endregion ŒöŠJƒƒ\ƒbƒh
+    #endregion å…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
 
-    #region ”ñŒöŠJƒƒ\ƒbƒh     
-    protected void Init() //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
+    #region éå…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰     
+    protected void Init() //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–
     {
-        vector2Ints = new Vector2Int[2]; //ˆÚ“®—Ê‚ğ‰Šú‰»
-        dropVector2Ints = new Vector2Int[2]; //ƒhƒƒbƒv’n“_‚ğ‰Šú‰»
-        cts = new CancellationTokenSource(); //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“‚ğ‰Šú‰»
-        M.onCreateAtomType += type => atomsQueue.Enqueue(type); //Œ´q‚ÌƒLƒ…[‚ğì¬
-        atomObjectHashs = new Dictionary<FormulaObject, HashSet<Vector2Int>>(); //‘µ‚Á‚½Œ´q‚ÌƒŠƒXƒg‚ğ‰Šú‰»
-        atomsQueue = new Queue<AtomType>(); //ƒyƒAŒ´q‚ÌƒLƒ…[‚ğ‰Šú‰»
-        stageAtom = new AtomObject[M.Size.x, M.Size.y]; //Œ´q‚ÌˆÊ’u‚ğ‰Šú‰»
-        stageAtomF = new float[M.Size.x * M.Size.y]; //Œ´q”Ô†‚ÌˆÊ’u‚ğ‰Šú‰»
+        vector2Ints = new Vector2Int[2]; //ç§»å‹•é‡ã‚’åˆæœŸåŒ–
+        dropVector2Ints = new Vector2Int[2]; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’åˆæœŸåŒ–
+        cts = new CancellationTokenSource(); //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³ã‚’åˆæœŸåŒ–
+        M.onCreateAtomType += type => atomsQueue.Enqueue(type); //åŸå­ã®ã‚­ãƒ¥ãƒ¼ã‚’ä½œæˆ
+        atomObjectHashs = new Dictionary<FormulaObject, HashSet<Vector2Int>>(); //æƒã£ãŸåŸå­ã®ãƒªã‚¹ãƒˆã‚’åˆæœŸåŒ–
+        atomsQueue = new Queue<AtomType>(); //ãƒšã‚¢åŸå­ã®ã‚­ãƒ¥ãƒ¼ã‚’åˆæœŸåŒ–
+        stageAtom = new AtomObject[M.Size.x, M.Size.y]; //åŸå­ã®ä½ç½®ã‚’åˆæœŸåŒ–
+        stageAtomF = new float[M.Size.x * M.Size.y]; //åŸå­ç•ªå·ã®ä½ç½®ã‚’åˆæœŸåŒ–
         dropAtomYs = new int[M.Size.x];
-        nextAtoms = new AtomObject[4]; //Ÿ‚ÌŒ´q‚ğ‰Šú‰»
-        currentAtoms = new AtomObject[2]; //Œ»İ‚ÌŒ´q‚ğ‰Šú‰»
+        nextAtoms = new AtomObject[4]; //æ¬¡ã®åŸå­ã‚’åˆæœŸåŒ–
+        currentAtoms = new AtomObject[2]; //ç¾åœ¨ã®åŸå­ã‚’åˆæœŸåŒ–
         currentAtomPositions = new Vector2Int[2];
-        checkBuffer = new List<Vector2Int>(23); //’T¸’†Œ´qƒoƒbƒtƒ@‚ğ‰Šú‰»
-        //ƒhƒƒbƒv’n“_‚ğ‰Šú‰»
+        checkBuffer = new List<Vector2Int>(23); //æ¢æŸ»ä¸­åŸå­ãƒãƒƒãƒ•ã‚¡ã‚’åˆæœŸåŒ–
+        //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’åˆæœŸåŒ–
         dropPoints = new SpriteRenderer[2];
-        for(int i = 0; i< dropPoints.Length; i++)        
+        for (int i = 0; i < dropPoints.Length; i++)
         {
-            dropPoints[i] = Instantiate(M.DropPointPrefab, transform); //ƒhƒƒbƒv’n“_‚ğ¶¬
-            dropPoints[i].enabled = false; //ƒhƒƒbƒv’n“_‚ğ”ñ•\¦‚É‚·‚é
+            dropPoints[i] = Instantiate(M.DropPointPrefab, transform); //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’ç”Ÿæˆ
+            dropPoints[i].enabled = false; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’éè¡¨ç¤ºã«ã™ã‚‹
         }
         atomObjectPool = new ObjectPool<AtomObject>(
            createFunc: () => Instantiate(M.AtomPrefab),
-           actionOnGet:go =>
+           actionOnGet: go =>
            {
                go.Enabled();
-               go.transform.parent = transform; //e‚ğƒvƒŒƒCƒ„[‚Éİ’è
+               go.transform.parent = transform; //è¦ªã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«è¨­å®š
            },
-           actionOnRelease: go => 
+           actionOnRelease: go =>
            {
                go.UnEnabled();
-               go.transform.parent = M.StockAtoms.transform; //e‚ğnull‚Éİ’è
+               go.transform.parent = M.StockAtoms.transform; //è¦ªã‚’nullã«è¨­å®š
            },
            collectionCheck: false,
            defaultCapacity: 100,
@@ -200,89 +200,91 @@ public class PlayerBase : MonoBehaviour
         chemicalText.enabled = false;
         formulaStart = formulaText.rectTransform.position;
         chemicalStart = chemicalText.rectTransform.position;
-        pointText.text = $"{point.ToString()}P" ;
+        pointText.text = $"{point.ToString()}P";
         stringBuilder = new StringBuilder();
     }
-    protected virtual void SetAtoms(bool isStart = true) //Œ´q‚ğƒZƒbƒg‚·‚éƒƒ\ƒbƒh
+    protected virtual void SetAtoms(bool isStart = true) //åŸå­ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        //Œ´q‚ğˆÚ“®
+        //åŸå­ã‚’ç§»å‹•
         for (int i = 0; i < 2; i++)
         {
-            //Œ»İ‚ÌŒ´q‚Ìİ’è
-            currentAtoms[i] = nextAtoms[i]; //Ÿ‚ÌŒ´q‚ğŒ»İ‚ÌŒ´q‚Éİ’è
+            //ç¾åœ¨ã®åŸå­ã®è¨­å®š
+            currentAtoms[i] = nextAtoms[i]; //æ¬¡ã®åŸå­ã‚’ç¾åœ¨ã®åŸå­ã«è¨­å®š
             if (currentAtoms[i] != null)
             {
                 var vector = new Vector2Int(M.StartPosition.x, M.StartPosition.y + i);
-                Set(currentAtoms[i], vector, i); //Œ´q‚ğˆÚ“®
+                Set(currentAtoms[i], vector, i); //åŸå­ã‚’ç§»å‹•
             }
-            //Ÿ‚ÌŒ´q‚Ìİ’è
-            nextAtoms[i] = nextAtoms[i + 2]; //Ÿ‚ÌŸ‚ÌŒ´q‚ğŸ‚ÌŒ´q‚Éİ’è
+            //æ¬¡ã®åŸå­ã®è¨­å®š
+            nextAtoms[i] = nextAtoms[i + 2]; //æ¬¡ã®æ¬¡ã®åŸå­ã‚’æ¬¡ã®åŸå­ã«è¨­å®š
             if (nextAtoms[i] != null)
             {
-                nextAtoms[i].transform.localPosition = new Vector3(nextAtomsPosition[0].x, nextAtomsPosition[0].y + i, 0f); //Œ´q‚ÌˆÊ’u‚ğİ’è
+                nextAtoms[i].transform.localPosition = new Vector3(nextAtomsPosition[0].x, nextAtomsPosition[0].y + i, 0f); //åŸå­ã®ä½ç½®ã‚’è¨­å®š
             }
-            //Ÿ‚ÌŸ‚ÌŒ´q‚Ìİ’è
+            //æ¬¡ã®æ¬¡ã®åŸå­ã®è¨­å®š
             if (atomsQueue.Count <= 0)
             {
-                M.CreateAtoms(); //ƒyƒAŒ´q‚ğ¶¬
+                M.CreateAtoms(); //ãƒšã‚¢åŸå­ã‚’ç”Ÿæˆ
             }
-            nextAtoms[i + 2] = SetAtom(atomsQueue.Dequeue(), this); //Œ´q‚ğƒZƒbƒg
+            nextAtoms[i + 2] = SetAtom(atomsQueue.Dequeue(), this); //åŸå­ã‚’ã‚»ãƒƒãƒˆ
             nextAtoms[i + 2].transform.localPosition = new Vector3(nextAtomsPosition[1].x, nextAtomsPosition[1].y + i, 0f); ;
         }
         if (isStart)
         {
             playState = PlayState.Move;
             SetDropPoint(ref dropVector2Ints, ref currentAtomPositions);
-            //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ğ”¼•ª‚É‚·‚é
+            //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆã‚’åŠåˆ†ã«ã™ã‚‹
             dropCount = M.DropTime / 2;
         }
-    }  
-    private void Set(AtomObject atomObject, in Vector2Int currect, int index) //Œ´q‚ğƒZƒbƒg
+    }
+    private void Set(AtomObject atomObject, in Vector2Int currect, int index) //åŸå­ã‚’ã‚»ãƒƒãƒˆ
     {
         if (stageAtom[currect.x, currect.y] != null)
         {
             playState = PlayState.GameOver;
+            M.GameOver(this);
+            return;
         }
-        //Œ´q‚ğˆÚ“®
-        atomObject.transform.localPosition = currect + leftBottomPosition; //Transform‚ÌˆÊ’u‚ğİ’è
+        //åŸå­ã‚’ç§»å‹•
+        atomObject.transform.localPosition = currect + leftBottomPosition; //Transformã®ä½ç½®ã‚’è¨­å®š
         SettingDisplay(currect.y, atomObject);
         currentAtomPositions[index] = currect;
-    }    
-    void SetFreeAtom(int x, int y, AtomObject atomObject) //Œ´q‚ğİ’è‚·‚éƒƒ\ƒbƒh
+    }
+    void SetFreeAtom(int x, int y, AtomObject atomObject) //åŸå­ã‚’è¨­å®šã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         var vector2Int = new Vector2Int(x, y);
-        stageAtom[x, y] = atomObject; //Œ´q‚ÌˆÊ’u‚ğİ’è
-        stageAtomF[x + y * M.Size.x] = (int)atomObject.AtomType + 1; //Œ´q”Ô†‚ğİ’è
-        stageAtom[x, y].transform.localPosition = vector2Int + leftBottomPosition; //Transform‚ÌˆÊ’u‚ğİ’è
+        stageAtom[x, y] = atomObject; //åŸå­ã®ä½ç½®ã‚’è¨­å®š
+        stageAtomF[x + y * M.Size.x] = (int)atomObject.AtomType + 1; //åŸå­ç•ªå·ã‚’è¨­å®š
+        stageAtom[x, y].transform.localPosition = vector2Int + leftBottomPosition; //Transformã®ä½ç½®ã‚’è¨­å®š
     }
-    protected virtual void PlayMove() //ˆÚ“®“ü—Í‚ğˆ—‚·‚éƒƒ\ƒbƒh
+    protected virtual void PlayMove() //ç§»å‹•å…¥åŠ›ã‚’å‡¦ç†ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
 #if DEBUG
-        DropStep(Time.deltaTime * 0.3f); //ƒhƒƒbƒvˆ—
+        DropStep(Time.deltaTime * 0.3f); //ãƒ‰ãƒ­ãƒƒãƒ—å‡¦ç†
 #else
-        DropStep(Time.deltaTime); //ƒhƒƒbƒvˆ—
+        DropStep(Time.deltaTime); //ãƒ‰ãƒ­ãƒƒãƒ—å‡¦ç†
 #endif
     }
-    protected void DropStep(float deltaTime) //ˆÚ“®“ü—Í‚ğˆ—‚·‚éƒƒ\ƒbƒh
+    protected void DropStep(float deltaTime) //ç§»å‹•å…¥åŠ›ã‚’å‡¦ç†ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ğXV
+        //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
         dropCount += deltaTime;
-        //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ªˆê’èŠÔ‚ğ’´‚¦‚½‚ç‰ºˆÚ“®
+        //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šæ™‚é–“ã‚’è¶…ãˆãŸã‚‰ä¸‹ç§»å‹•
         if (dropCount >= M.DropTime)
         {
             bool move = Move(Direction.Down);
-            dropCount = 0; //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+            dropCount = 0; //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             if (!move)
             {
-                foreach(var dropPoint in dropPoints)
+                foreach (var dropPoint in dropPoints)
                 {
-                    dropPoint.enabled = false; //ƒhƒƒbƒv’n“_‚ğ”ñ•\¦‚É‚·‚é
+                    dropPoint.enabled = false; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’éè¡¨ç¤ºã«ã™ã‚‹
                 }
                 EndCheck().Forget();
             }
         }
     }
-    async UniTaskVoid EndCheck() //ƒ`ƒFƒbƒN‚©‚·‚×‚Ä‚©‚ç‚©”»’è
+    async UniTaskVoid EndCheck() //ãƒã‚§ãƒƒã‚¯ã‹ã™ã¹ã¦ã‹ã‚‰ã‹åˆ¤å®š
     {
         playState = PlayState.NoMove;
         await FreeFall();
@@ -295,7 +297,7 @@ public class PlayerBase : MonoBehaviour
         }
         SetAtoms();
     }
-    async UniTask CheckOrFullClear() //ƒ`ƒFƒbƒN‚©‚·‚×‚Ä‚©‚ç‚©”»’è
+    async UniTask CheckOrFullClear() //ãƒã‚§ãƒƒã‚¯ã‹ã™ã¹ã¦ã‹ã‚‰ã‹åˆ¤å®š
     {
         chainCount = 0;
         comboCount = 0;
@@ -303,9 +305,9 @@ public class PlayerBase : MonoBehaviour
         {
             if (Check())
             {
-                //‰»Šw®‚ğƒ`ƒFƒbƒN‚·‚é
-                var center = await PointCount(); //“¾“_‚ğŒvZ
-                await AtomDelete(); //Œ´q‚ğíœ
+                //åŒ–å­¦å¼ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+                var center = await PointCount(); //å¾—ç‚¹ã‚’è¨ˆç®—
+                await AtomDelete(); //åŸå­ã‚’å‰Šé™¤
                 await FreeFall(true);
                 SetDisturbance(center);
             }
@@ -314,7 +316,7 @@ public class PlayerBase : MonoBehaviour
                 break;
             }
             bool allNull = true;
-            //ˆê”Ô‰º‚ªnull‚©‚Ç‚¤‚©
+            //ä¸€ç•ªä¸‹ãŒnullã‹ã©ã†ã‹
             for (int i = 0; i < M.Size.x; i++)
             {
                 if (stageAtom[i, 0] != null)
@@ -325,13 +327,13 @@ public class PlayerBase : MonoBehaviour
             }
             if (allNull)
             {
-                //‚·‚×‚Ä‚ÌŒ´q‚ª‚È‚¢
+                //ã™ã¹ã¦ã®åŸå­ãŒãªã„
                 await FullClear();
                 break;
             }
         }
     }
-    public async UniTaskVoid PlayCountdownAsync() //ƒJƒEƒ“ƒgƒ_ƒEƒ“ƒƒ\ƒbƒh
+    public async UniTaskVoid PlayCountdownAsync() //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ãƒ¡ã‚½ãƒƒãƒ‰
     {
         string[] texts = { "3", "2", "1", "Go!" };
         foreach (var text in texts)
@@ -343,18 +345,19 @@ public class PlayerBase : MonoBehaviour
             var sequence = DOTween.Sequence();
             sequence.Append(countdownText.transform.DOScale(1.5f, 0.2f).SetEase(end ? Ease.OutSine : Ease.OutBack));
             sequence.Join(countdownText.DOFade(1f, 0.1f));
-            if(!end) sequence.AppendInterval(0.5f);
+            if (!end) sequence.AppendInterval(0.5f);
             sequence.Append(countdownText.DOFade(0f, end ? 1.4f : 0.3f).SetEase(end ? Ease.InOutSine : Ease.Unset));
             sequence.Join(countdownText.transform.DOScale(end ? 2.4f : 2f, end ? 1.4f : 0.3f).SetEase(end ? Ease.InOutSine : Ease.Unset));
-            await sequence.AsyncWaitForCompletion();
+            sequence.SetLink(gameObject);
+            await sequence.AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(cts.Token);
         }
         countdownText.gameObject.SetActive(false);
     }
-    public virtual void SetStart() //ƒQ[ƒ€ŠJn
+    public virtual void SetStart() //ã‚²ãƒ¼ãƒ é–‹å§‹
     {
-        SetAtoms(); //Œ´q‚ğƒZƒbƒg
+        SetAtoms(); //åŸå­ã‚’ã‚»ãƒƒãƒˆ
     }
-    bool Check() //‰»Šw®‚ğƒ`ƒFƒbƒN‚·‚éƒƒ\ƒbƒh
+    bool Check() //åŒ–å­¦å¼ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         bool ok = false;
         foreach (var formula in M.Formulas)
@@ -363,10 +366,10 @@ public class PlayerBase : MonoBehaviour
         }
         return ok;
     }
-    async UniTask<Vector3> PointCount() //“¾“_‚ğŒvZA•\¦
+    async UniTask<Vector3> PointCount() //å¾—ç‚¹ã‚’è¨ˆç®—ã€è¡¨ç¤º
     {
         Vector3 center = new Vector3();
-        //“¾“_‚ÌŒvZ
+        //å¾—ç‚¹ã®è¨ˆç®—
         var sortedFormulas = atomObjectHashs
             .Select(kv => kv)
             .ToList();
@@ -374,19 +377,19 @@ public class PlayerBase : MonoBehaviour
         for (int i = 0; i < sortedFormulas.Count; i++)
         {
             int prePoint = point;
-            SetPoint(sortedFormulas[i].Value.Count, sortedFormulas[i].Key.Point, chainCount, comboCount); //“¾“_‚ğŒvZ
-            chainCount++; //˜A½”‚ğXV
+            SetPoint(sortedFormulas[i].Value.Count, sortedFormulas[i].Key.Point, chainCount, comboCount); //å¾—ç‚¹ã‚’è¨ˆç®—
+            chainCount++; //é€£é–æ•°ã‚’æ›´æ–°
             FormulaText(sortedFormulas[i].Key.Name).Forget();
             ChemicalText(sortedFormulas[i].Key.Formula).Forget();
             DisplayText(sortedFormulas[i].Value, prePoint).Forget();
             ScaleAtom(sortedFormulas[i].Value, out center);
             await UniTask.WaitForSeconds(1f, cancellationToken: cts.Token);
-        }    
-        comboCount++; //ƒRƒ“ƒ{”‚ğXV
+        }
+        comboCount++; //ã‚³ãƒ³ãƒœæ•°ã‚’æ›´æ–°
         chainCount = 0;
         return center;
     }
-    void ScaleAtom(HashSet<Vector2Int> vector2Ints, out Vector3 center) //‘µ‚Á‚½‰»Šw®‚ğŠg‘å•\¦‚·‚é
+    void ScaleAtom(HashSet<Vector2Int> vector2Ints, out Vector3 center) //æƒã£ãŸåŒ–å­¦å¼ã‚’æ‹¡å¤§è¡¨ç¤ºã™ã‚‹
     {
         Vector3 vectorAtom = new Vector3();
         center = new Vector3();
@@ -414,12 +417,12 @@ public class PlayerBase : MonoBehaviour
         await FormulaPointAsync(vector2Ints);
         PointAsync(prePoint);
     }
-    async UniTask FormulaPointAsync(HashSet<Vector2Int> vector2Ints)//‰»Šw®“¾“_•\¦
+    async UniTask FormulaPointAsync(HashSet<Vector2Int> vector2Ints)//åŒ–å­¦å¼å¾—ç‚¹è¡¨ç¤º
     {
         stringBuilder.Append($"{pointSet.AtomCount.ToString()}x{pointSet.FormulaPoint.ToString()}");
         if (pointSet.ChainRate != 1) stringBuilder.Append($"x{pointSet.ChainRate.ToString()}");
         if (pointSet.ComboRate != 1) stringBuilder.Append($"x{pointSet.ComboRate.ToString()}");
-        formulaPointText.text = stringBuilder.ToString(); //“¾“_‚ğ•\¦
+        formulaPointText.text = stringBuilder.ToString(); //å¾—ç‚¹ã‚’è¡¨ç¤º
         stringBuilder.Clear();
         formulaPointText.enabled = true;
 #if DEBUG
@@ -428,7 +431,7 @@ public class PlayerBase : MonoBehaviour
         vector3 = transform.position;
         vector3.x += (float)(vector2Ints.Average(p => p.x) + leftBottomPosition.x);
         vector3.y += (float)(vector2Ints.Average(p => p.y) + leftBottomPosition.y);
-        formulaPointText.rectTransform.position = vector3; //‰»Šw®ƒeƒLƒXƒg‚ÌˆÊ’u‚ğİ’è
+        formulaPointText.rectTransform.position = vector3; //åŒ–å­¦å¼ãƒ†ã‚­ã‚¹ãƒˆã®ä½ç½®ã‚’è¨­å®š
         formulaPointText.rectTransform.localScale = vector3One;
         vector3.y += 0.5f;
         var seq = DOTween.Sequence();
@@ -439,11 +442,12 @@ public class PlayerBase : MonoBehaviour
             .Join(DOTween.Sequence()
                 .AppendInterval(0.2f)
                 .Append(formulaPointText.DOFade(0f, 0.1f)));
-        await seq.AsyncWaitForCompletion(); //•\¦ŠÔ
+        seq.SetLink(gameObject);
+        await seq.AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(cts.Token);  //è¡¨ç¤ºæ™‚é–“
 #endif
         formulaPointText.enabled = false;
     }
-    void PointAsync(int prePoint)//“¾“_•\¦
+    void PointAsync(int prePoint)//å¾—ç‚¹è¡¨ç¤º
     {
         DOVirtual.Int(prePoint, point, 0.7f, value =>
         {
@@ -454,28 +458,28 @@ public class PlayerBase : MonoBehaviour
             .AppendInterval(0.6f)
             .Append(pointText.rectTransform.DOScale(1f, 0.1f));
     }
-    async UniTask AtomDelete() //Œ´q‚Ìíœ
+    async UniTask AtomDelete() //åŸå­ã®å‰Šé™¤
     {
-        //Œ´q‚Ìíœ
+        //åŸå­ã®å‰Šé™¤
         foreach (var atomObjectHash in atomObjectHashs)
         {
-            //‘µ‚Á‚½Œ´q‚ğíœ
+            //æƒã£ãŸåŸå­ã‚’å‰Šé™¤
             foreach (var atom in atomObjectHash.Value)
             {
                 if (stageAtom[atom.x, atom.y] != null)
                 {
-                    atomObjectPool.Release(stageAtom[atom.x, atom.y]); //Œ´q‚ğƒv[ƒ‹‚É–ß‚·
+                    atomObjectPool.Release(stageAtom[atom.x, atom.y]); //åŸå­ã‚’ãƒ—ãƒ¼ãƒ«ã«æˆ»ã™
                     stageAtom[atom.x, atom.y] = null;
-                    stageAtomF[atom.x + atom.y * M.Size.x] = 0; //Œ´q”Ô†‚ğİ’è
+                    stageAtomF[atom.x + atom.y * M.Size.x] = 0; //åŸå­ç•ªå·ã‚’è¨­å®š
                     if (dropAtomYs[atom.x] > atom.y) dropAtomYs[atom.x] = atom.y;
                 }
             }
         }
-        //‘µ‚Á‚½Œ´q‚ğíœ
-        atomObjectHashs.Clear(); 
-        await UniTask.WaitForSeconds(1.0f, ignoreTimeScale: false, cancellationToken: cts.Token); //•\¦ŠÔ
+        //æƒã£ãŸåŸå­ã‚’å‰Šé™¤
+        atomObjectHashs.Clear();
+        await UniTask.WaitForSeconds(1.0f, ignoreTimeScale: false, cancellationToken: cts.Token); //è¡¨ç¤ºæ™‚é–“
     }
-    async UniTaskVoid FormulaText(string formulaName) //‰»Šw®•\¦
+    async UniTaskVoid FormulaText(string formulaName) //åŒ–å­¦å¼è¡¨ç¤º
     {
         formulaText.rectTransform.position = formulaStart;
         formulaText.enabled = true;
@@ -487,10 +491,11 @@ public class PlayerBase : MonoBehaviour
                 .Join(formulaText.DOFade(1f, 0.1f))
                 .AppendInterval(0.4f)
                 .Append(formulaText.DOFade(0f, 0.4f)));
-        await seq.AsyncWaitForCompletion(); //•\¦ŠÔ
+        seq.SetLink(gameObject);
+        await seq.AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(cts.Token);
         formulaText.enabled = false;
     }
-    async UniTaskVoid ChemicalText(string formulaName) //‰»Šw®•\¦
+    async UniTaskVoid ChemicalText(string formulaName) //åŒ–å­¦å¼è¡¨ç¤º
     {
         chemicalText.rectTransform.position = chemicalStart;
         chemicalText.enabled = true;
@@ -500,31 +505,32 @@ public class PlayerBase : MonoBehaviour
         seq.Append(chemicalText.rectTransform.DOScale(1.5f, 0.6f))
             .Join(DOTween.Sequence()
                 .Join(chemicalText.DOFade(1f, 0.1f))
-                .AppendInterval (0.4f)
+                .AppendInterval(0.4f)
                 .Append(chemicalText.DOFade(0f, 0.4f)));
-        await seq.AsyncWaitForCompletion(); //•\¦ŠÔ
+        seq.SetLink(gameObject);
+        await seq.AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(cts.Token);
         chemicalText.enabled = false;
     }
-    async UniTask FullClear() //ƒXƒe[ƒW‚ª‹ó‚Ì‚Æ‚«
+    async UniTask FullClear() //ã‚¹ãƒ†ãƒ¼ã‚¸ãŒç©ºã®ã¨ã
     {
-        FormulaText("‘SÁ‚µ").Forget();
+        FormulaText("å…¨æ¶ˆã—").Forget();
         for (int i = 0; i < M.Size.x; i++)
         {
             AtomObject atomObject = atomObjectPool.Get();
             var scale = atomObject.transform.localScale.x;
             atomObject.Set(GetAtomColor(M.FullClearAtom), M.FullClearAtom);
-            SetFreeAtom(i, 0, atomObject); //Œ´q‚ÌˆÊ’u‚ğİ’è
+            SetFreeAtom(i, 0, atomObject); //åŸå­ã®ä½ç½®ã‚’è¨­å®š
             dropAtomYs[i] = 1;
             atomObject.transform.localScale = Vector3.zero;
             atomObject.transform.DOScale(scale, 1f).SetEase(Ease.OutBounce);
         }
-        await UniTask.WaitForSeconds(1.0f, ignoreTimeScale: false, cancellationToken: cts.Token); //•\¦ŠÔ
+        await UniTask.WaitForSeconds(1.0f, ignoreTimeScale: false, cancellationToken: cts.Token); //è¡¨ç¤ºæ™‚é–“
     }
-    protected bool Move(Direction direction) //ˆÚ“®ƒƒ\ƒbƒh
+    protected bool Move(Direction direction) //ç§»å‹•ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        //ˆÚ“®‚Å‚«‚é‚©‚Ç‚¤‚©
+        //ç§»å‹•ã§ãã‚‹ã‹ã©ã†ã‹
         bool isSet = false;
-        //ˆÚ“®—Ê‚ğİ’è
+        //ç§»å‹•é‡ã‚’è¨­å®š
         if (direction == Direction.Right)
         {
             for (int i = 0; i < vector2Ints.Length; i++)
@@ -550,19 +556,19 @@ public class PlayerBase : MonoBehaviour
                 vector2Ints[i].y = -1;
             }
         }
-        //ˆÚ“®‰Â”\‚È‚çˆÚ“®
+        //ç§»å‹•å¯èƒ½ãªã‚‰ç§»å‹•
         if (isSet = CheckMovement(vector2Ints))
         {
             SettingPair(vector2Ints);
         }
         return isSet;
     }
-    async UniTask FreeFall(bool all = false) //Œ´q‚ğ©—R—‰º‚³‚¹‚éƒƒ\ƒbƒh
+    async UniTask FreeFall(bool all = false) //åŸå­ã‚’è‡ªç”±è½ä¸‹ã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         List<UniTask> uniTasks = new List<UniTask>();
         if (all)
         {
-            //‚·‚×‚Ä‚ÌŒ´q‚ğ©—R—‰º‚³‚¹‚é
+            //ã™ã¹ã¦ã®åŸå­ã‚’è‡ªç”±è½ä¸‹ã•ã›ã‚‹
             for (int i = 0; i < M.Size.x; i++)
             {
                 bool isBound = true;
@@ -582,31 +588,31 @@ public class PlayerBase : MonoBehaviour
         }
         else
         {
-            //Œ»İ‚ÌŒ´q‚ğƒXƒe[ƒW‚Éİ’è
+            //ç¾åœ¨ã®åŸå­ã‚’ã‚¹ãƒ†ãƒ¼ã‚¸ã«è¨­å®š
             stageAtom[currentAtomPositions[0].x, currentAtomPositions[0].y] = currentAtoms[0];
             stageAtom[currentAtomPositions[1].x, currentAtomPositions[1].y] = currentAtoms[1];
-            stageAtomF[currentAtomPositions[0].x + currentAtomPositions[0].y * M.Size.x] = (int)currentAtoms[0].AtomType + 1; //Œ´q”Ô†‚ğİ’è
-            stageAtomF[currentAtomPositions[1].x + currentAtomPositions[1].y * M.Size.x] = (int)currentAtoms[1].AtomType + 1; //Œ´q”Ô†‚ğİ’è
-            //Œ»İ‚ÌŒ´q‚ğ©—R—‰º‚³‚¹‚é
+            stageAtomF[currentAtomPositions[0].x + currentAtomPositions[0].y * M.Size.x] = (int)currentAtoms[0].AtomType + 1; //åŸå­ç•ªå·ã‚’è¨­å®š
+            stageAtomF[currentAtomPositions[1].x + currentAtomPositions[1].y * M.Size.x] = (int)currentAtoms[1].AtomType + 1; //åŸå­ç•ªå·ã‚’è¨­å®š
+            //ç¾åœ¨ã®åŸå­ã‚’è‡ªç”±è½ä¸‹ã•ã›ã‚‹
             int underIndex = currentAtomPositions[0].y < currentAtomPositions[1].y ? 0 : 1;
             bool isBound = currentAtomPositions[0].x != currentAtomPositions[1].x;
             uniTasks.Add(FreeFalling(currentAtomPositions[underIndex].x, currentAtomPositions[underIndex].y));
             uniTasks.Add(FreeFalling(currentAtomPositions[1 - underIndex].x, currentAtomPositions[1 - underIndex].y, isBound));
-            foreach(var dropPoint in dropPoints)
+            foreach (var dropPoint in dropPoints)
             {
-                dropPoint.enabled = false; //ƒhƒƒbƒv’n“_‚ğ”ñ•\¦‚É‚·‚é
+                dropPoint.enabled = false; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’éè¡¨ç¤ºã«ã™ã‚‹
             }
         }
         await UniTask.WhenAll(uniTasks);
     }
-    public async void Drop() //Œ´q‚ğƒhƒƒbƒv‚·‚éƒƒ\ƒbƒh
+    public async void Drop() //åŸå­ã‚’ãƒ‰ãƒ­ãƒƒãƒ—ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         if (M.CurrentState != State.Play) return;
         if (playState == PlayState.NoMove) return;
-        //ƒhƒƒbƒv‰Â”\‚©‚Ç‚¤‚©
+        //ãƒ‰ãƒ­ãƒƒãƒ—å¯èƒ½ã‹ã©ã†ã‹
         int dropNum = M.Size.y;
-        //ƒhƒƒbƒvÅ‘åˆÊ’u
-        for(int i = 0; i < currentAtomPositions.Length; i++)
+        //ãƒ‰ãƒ­ãƒƒãƒ—æœ€å¤§ä½ç½®
+        for (int i = 0; i < currentAtomPositions.Length; i++)
         {
             dropNum = Mathf.Min(dropNum, currentAtomPositions[i].y - dropAtomYs[currentAtomPositions[i].x]);
         }
@@ -621,40 +627,40 @@ public class PlayerBase : MonoBehaviour
                 uniTasks[i] = DoFreeFalling(currentAtoms[i], dropNum, currentAtomPositions[i].y, isBound);
             }
             SetDropPoint(ref dropVector2Ints, ref currentAtomPositions);
-            //ƒhƒƒbƒvˆÊ’u‚ğİ’è
+            //ãƒ‰ãƒ­ãƒƒãƒ—ä½ç½®ã‚’è¨­å®š
             playState = PlayState.NoMove;
             await UniTask.WhenAll(uniTasks);
         }
-        //ó‘Ô‚Ì•ÏX
+        //çŠ¶æ…‹ã®å¤‰æ›´
         EndCheck().Forget();
     }
-    bool CheckConnection(FormulaObject formula) //”Õ–Ê‚ÌAtomObject‚ğFormulaObject‚Æ”äŠr‚µA‚Â‚È‚ª‚è‚ğ”»’è‚·‚éƒƒ\ƒbƒh
+    bool CheckConnection(FormulaObject formula) //ç›¤é¢ã®AtomObjectã‚’FormulaObjectã¨æ¯”è¼ƒã—ã€ã¤ãªãŒã‚Šã‚’åˆ¤å®šã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         bool existed = false;
 
-        // ”Õ–Ê‚ÌƒTƒCƒY‚ğæ“¾
+        // ç›¤é¢ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
         int width = M.Size.x;
         int height = M.Size.y;
 
-        //// ’TõÏ‚İƒtƒ‰ƒO
+        //// æ¢ç´¢æ¸ˆã¿ãƒ•ãƒ©ã‚°
         bool[] visited = new bool[width * height];
 
-        // ”Õ–Ê‚ğ‘–¸
+        // ç›¤é¢ã‚’èµ°æŸ»
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (stageAtom[x, y] != null && (!existed || (existed && !atomObjectHashs[formula].Contains(new Vector2Int(x, y)))))
                 {
-                    // FormulaObject‚Ì\¬—v‘f‚ğæ“¾
+                    // FormulaObjectã®æ§‹æˆè¦ç´ ã‚’å–å¾—
                     Dictionary<AtomType, int> requiredAtoms = new Dictionary<AtomType, int>(formula.AtomDictionary);
-                    checkBuffer.Clear(); // ’T¸’†Œ´qƒoƒbƒtƒ@‚ğƒNƒŠƒA
+                    checkBuffer.Clear(); // æ¢æŸ»ä¸­åŸå­ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
                     visited.AsSpan().Fill(false);
-                    // ‚Â‚È‚ª‚è‚ğ’Tõ
+                    // ã¤ãªãŒã‚Šã‚’æ¢ç´¢
                     if (ExploreConnections(x, y, visited, requiredAtoms, formula.AtomCount, width, height))
                     {
-                        // ‚·‚×‚Ä‚Ì•K—v‚ÈŒ´q‚ªŒ©‚Â‚©‚Á‚½ê‡
-                        //atomObjectHashs[formula].UnionWith(checkBuffer); // ‘µ‚Á‚½Œ´q‚ğ•Û‘¶
+                        // ã™ã¹ã¦ã®å¿…è¦ãªåŸå­ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆ
+                        //atomObjectHashs[formula].UnionWith(checkBuffer); // æƒã£ãŸåŸå­ã‚’ä¿å­˜
                         atomObjectHashs.TryAdd(formula, new HashSet<Vector2Int>());
                         atomObjectHashs[formula].UnionWith(checkBuffer);
                         existed = true;
@@ -662,64 +668,64 @@ public class PlayerBase : MonoBehaviour
                 }
             }
         }
-        return existed; // ‚Â‚È‚ª‚è‚ª¬—§‚µ‚È‚¢
+        return existed; // ã¤ãªãŒã‚ŠãŒæˆç«‹ã—ãªã„
     }
-    bool ExploreConnections(int startX, int startY, bool[] visited, Dictionary<AtomType, int> requiredAtoms, int atomCount, int width, int height) //•K—v‚È”ÍˆÍ“à‚Å—×Ú‚·‚éAtomObject‚ğ’Tõ‚·‚éƒƒ\ƒbƒh
+    bool ExploreConnections(int startX, int startY, bool[] visited, Dictionary<AtomType, int> requiredAtoms, int atomCount, int width, int height) //å¿…è¦ãªç¯„å›²å†…ã§éš£æ¥ã™ã‚‹AtomObjectã‚’æ¢ç´¢ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         Stack<Vector2Int> stack = new Stack<Vector2Int>();
         stack.Push(new Vector2Int(startX, startY));
-        var vector2Int = new Vector2Int(); // ’Tõ’†Œ´qƒoƒbƒtƒ@
+        var vector2Int = new Vector2Int(); // æ¢ç´¢ä¸­åŸå­ãƒãƒƒãƒ•ã‚¡
         while (stack.Count > 0)
         {
             Vector2Int current = stack.Pop();
             int x = current.x;
             int y = current.y;
-            // ’Tõ”ÍˆÍŠO‚Ìê‡‚ÍŸ‚Ö
+            // æ¢ç´¢ç¯„å›²å¤–ã®å ´åˆã¯æ¬¡ã¸
             if (x < 0 || x >= width || y < 0 || y >= height) continue;
 
-            // ‚·‚Å‚É’TõÏ‚İA‚Ü‚½‚Í‹ó‚Ìê‡‚ÍŸ‚Ö
+            // ã™ã§ã«æ¢ç´¢æ¸ˆã¿ã€ã¾ãŸã¯ç©ºã®å ´åˆã¯æ¬¡ã¸
             if (visited[GetIndex(x, y, width)] || stageAtom[x, y] == null) continue;
 
-            // Œ»İ‚ÌˆÊ’u‚ğ’TõÏ‚İ‚Éİ’è
+            // ç¾åœ¨ã®ä½ç½®ã‚’æ¢ç´¢æ¸ˆã¿ã«è¨­å®š
             visited[GetIndex(x, y, width)] = true;
 
-            // Œ»İ‚ÌAtomObject‚ğæ“¾
+            // ç¾åœ¨ã®AtomObjectã‚’å–å¾—
             AtomObject atom = stageAtom[x, y];
 
-            // g—p‚µ‚È‚¢‚Ü‚½‚Í•K—v”‚ğ’´‚¦‚½ê‡‚Í’Tõ‚ğŸ‚Ö
+            // ä½¿ç”¨ã—ãªã„ã¾ãŸã¯å¿…è¦æ•°ã‚’è¶…ãˆãŸå ´åˆã¯æ¢ç´¢ã‚’æ¬¡ã¸
             if (!requiredAtoms.ContainsKey(atom.AtomType) || requiredAtoms[atom.AtomType] <= 0)
             {
                 continue;
             }
-            // •K—v‚ÈŒ´q‚ğƒJƒEƒ“ƒg
+            // å¿…è¦ãªåŸå­ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
             requiredAtoms[atom.AtomType]--;
             atomCount--;
-            // ‘µ‚Á‚½Œ´q‚ğ•Û‘¶
+            // æƒã£ãŸåŸå­ã‚’ä¿å­˜
             vector2Int.x = x;
             vector2Int.y = y;
             checkBuffer.Add(vector2Int);
 
-            // ‚·‚×‚Ä‚Ì•K—v‚ÈŒ´q‚ªŒ©‚Â‚©‚Á‚½ê‡‚ÍI—¹
+            // ã™ã¹ã¦ã®å¿…è¦ãªåŸå­ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯çµ‚äº†
             if (atomCount <= 0)
             {
                 return true;
             }
 
-            // —×Ú‚·‚éˆÊ’u‚ğƒXƒ^ƒbƒN‚É’Ç‰Á
+            // éš£æ¥ã™ã‚‹ä½ç½®ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«è¿½åŠ 
             foreach (var (dx, dy) in new[] { (1, 0), (-1, 0), (0, 1), (0, -1) })
             {
                 stack.Push(new Vector2Int(x + dx, y + dy));
             }
         }
-        return false; // ‚Â‚È‚ª‚è‚ª¬—§‚µ‚È‚¢
+        return false; // ã¤ãªãŒã‚ŠãŒæˆç«‹ã—ãªã„
 
         int GetIndex(int x, int y, int width) => y * width + x;
     }
-    private bool CheckMovement(in Vector2Int[] position) //ˆÚ“®‚Ìƒ`ƒFƒbƒN
+    private bool CheckMovement(in Vector2Int[] position) //ç§»å‹•ã®ãƒã‚§ãƒƒã‚¯
     {
         int[] targetX = new int[position.Length];
         int[] targetY = new int[position.Length];
-        bool ok = true; //ˆÚ“®‰Â”\‚©‚Ç‚¤‚©
+        bool ok = true; //ç§»å‹•å¯èƒ½ã‹ã©ã†ã‹
         for (int i = 0; i < targetX.Length; i++)
         {
             targetX[i] = currentAtomPositions[i].x + position[i].x;
@@ -728,20 +734,20 @@ public class PlayerBase : MonoBehaviour
         }
         return ok;
     }
-    private void SettingPair(in Vector2Int[] positions) //Œ´q‚ğƒZƒbƒg
+    private void SettingPair(in Vector2Int[] positions) //åŸå­ã‚’ã‚»ãƒƒãƒˆ
     {
-        //ˆÚ“®
+        //ç§»å‹•
         for (int i = 0; i < currentAtomPositions.Length; i++)
         {
             currentAtomPositions[i] += positions[i];
-            currentAtoms[i].transform.localPosition = currentAtomPositions[i] + leftBottomPosition; //Transform‚ÌˆÊ’u‚ğİ’è
+            currentAtoms[i].transform.localPosition = currentAtomPositions[i] + leftBottomPosition; //Transformã®ä½ç½®ã‚’è¨­å®š
             SettingDisplay(currentAtomPositions[i].y, currentAtoms[i]);
         }
         SetDropPoint(ref dropVector2Ints, ref currentAtomPositions);
     }
-    private void SetDropPoint(ref Vector2Int[] currents, ref Vector2Int[] currentAtomPositions) //ƒhƒƒbƒvˆÊ’uİ’è
+    private void SetDropPoint(ref Vector2Int[] currents, ref Vector2Int[] currentAtomPositions) //ãƒ‰ãƒ­ãƒƒãƒ—ä½ç½®è¨­å®š
     {
-        if(currentAtomPositions[0].y == currentAtomPositions[1].y)
+        if (currentAtomPositions[0].y == currentAtomPositions[1].y)
         {
             for (int i = 0; i < currentAtomPositions.Length; i++)
             {
@@ -749,12 +755,12 @@ public class PlayerBase : MonoBehaviour
                 currents[i].y = dropAtomYs[currentAtomPositions[i].x];
                 if (currentAtomPositions[i].y <= currents[i].y)
                 {
-                    dropPoints[i].enabled = false; //ƒhƒƒbƒv’n“_‚ğ”ñ•\¦‚É‚·‚é
+                    dropPoints[i].enabled = false; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’éè¡¨ç¤ºã«ã™ã‚‹
                 }
                 else
                 {
-                    if(dropPoints[i].enabled == false) dropPoints[i].enabled = true; //ƒhƒƒbƒv’n“_‚ğ•\¦‚É‚·‚é
-                    dropPoints[i].transform.localPosition = currents[i] + leftBottomPosition; //ƒhƒƒbƒv’n“_‚ÌˆÊ’u‚ğİ’è
+                    if (dropPoints[i].enabled == false) dropPoints[i].enabled = true; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’è¡¨ç¤ºã«ã™ã‚‹
+                    dropPoints[i].transform.localPosition = currents[i] + leftBottomPosition; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã®ä½ç½®ã‚’è¨­å®š
                 }
             }
         }
@@ -767,17 +773,17 @@ public class PlayerBase : MonoBehaviour
                 currents[i].y = dropAtomYs[currentAtomPositions[i].x] + i;
                 if (lowerY <= currents[i].y)
                 {
-                    dropPoints[i].enabled = false; //ƒhƒƒbƒv’n“_‚ğ”ñ•\¦‚É‚·‚é
+                    dropPoints[i].enabled = false; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’éè¡¨ç¤ºã«ã™ã‚‹
                 }
                 else
                 {
-                    if (dropPoints[i].enabled == false) dropPoints[i].enabled = true; //ƒhƒƒbƒv’n“_‚ğ•\¦‚É‚·‚é
-                    dropPoints[i].transform.localPosition = currents[i] + leftBottomPosition; //ƒhƒƒbƒv’n“_‚ÌˆÊ’u‚ğİ’è
+                    if (dropPoints[i].enabled == false) dropPoints[i].enabled = true; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã‚’è¡¨ç¤ºã«ã™ã‚‹
+                    dropPoints[i].transform.localPosition = currents[i] + leftBottomPosition; //ãƒ‰ãƒ­ãƒƒãƒ—åœ°ç‚¹ã®ä½ç½®ã‚’è¨­å®š
                 }
             }
         }
     }
-    private void SettingDisplay(int y, AtomObject atomObject) //Œ´q‚ğƒZƒbƒg
+    private void SettingDisplay(int y, AtomObject atomObject) //åŸå­ã‚’ã‚»ãƒƒãƒˆ
     {
         if (y >= displayUpper)
         {
@@ -788,19 +794,19 @@ public class PlayerBase : MonoBehaviour
             atomObject.Enabled();
         }
     }
-    protected void Rotation(Direction direction) //Œ´q‚ğ‰ñ“]‚³‚¹‚éƒƒ\ƒbƒh
+    protected void Rotation(Direction direction) //åŸå­ã‚’å›è»¢ã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         if (M.CurrentState != MainManager.State.Play) return;
-        //‰ñ“]‰Â”\‚©‚Ç‚¤‚©
+        //å›è»¢å¯èƒ½ã‹ã©ã†ã‹
         bool isSet = false;
-        //‰ñ“]î•ñ‚ğæ“¾
+        //å›è»¢æƒ…å ±ã‚’å–å¾—
         RotationInfo rotationInfo = RotationInfo.Top;
         if (currentAtomPositions[0].x < currentAtomPositions[1].x) rotationInfo = RotationInfo.Right;
         else if (currentAtomPositions[0].x > currentAtomPositions[1].x) rotationInfo = RotationInfo.Left;
         else if (currentAtomPositions[0].y > currentAtomPositions[1].y) rotationInfo = RotationInfo.Down;
-        //‰ñ“]ˆÊ’u‚ğİ’è
+        //å›è»¢ä½ç½®ã‚’è¨­å®š
         SetRotationPosition(ref vector2Ints, direction, rotationInfo);
-        //‰ñ“]‰Â”\‚È‚ç‰ñ“]
+        //å›è»¢å¯èƒ½ãªã‚‰å›è»¢
         if (isSet = CheckMovement(vector2Ints))
         {
             SettingPair(vector2Ints);
@@ -814,12 +820,12 @@ public class PlayerBase : MonoBehaviour
             }
         }
     }
-    void SetRotationPosition(ref Vector2Int[] vector2Ints, Direction direction, RotationInfo rotationInfo) //‰ñ“]ˆÊ’u‚ğƒZƒbƒg
+    void SetRotationPosition(ref Vector2Int[] vector2Ints, Direction direction, RotationInfo rotationInfo) //å›è»¢ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
     {
-        //²‚Í‚Ü‚í‚ç‚È‚¢
+        //è»¸ã¯ã¾ã‚ã‚‰ãªã„
         vector2Ints[0].x = 0;
         vector2Ints[0].y = 0;
-        //‰ñ“]ˆÊ’u‚ğİ’è
+        //å›è»¢ä½ç½®ã‚’è¨­å®š
         if (direction == Direction.Left)
         {
             if (rotationInfo == RotationInfo.Top)
@@ -867,9 +873,9 @@ public class PlayerBase : MonoBehaviour
             }
         }
     }
-    void SetRotationPosition2(ref Vector2Int[] vector2Ints, Direction direction, RotationInfo rotationInfo) //‰ñ“]ˆÊ’u‚ğƒZƒbƒg
+    void SetRotationPosition2(ref Vector2Int[] vector2Ints, Direction direction, RotationInfo rotationInfo) //å›è»¢ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
     {
-        //‰ñ“]ˆÊ’u‚ğİ’è
+        //å›è»¢ä½ç½®ã‚’è¨­å®š
         if (direction == Direction.Left)
         {
             if (rotationInfo == RotationInfo.Top)
@@ -907,21 +913,21 @@ public class PlayerBase : MonoBehaviour
             }
         }
     }
-    async UniTask FreeFalling(int x, int y, bool isBound = true) //Œ´q‚ğ©—R—‰º‚³‚¹‚éƒƒ\ƒbƒh
+    async UniTask FreeFalling(int x, int y, bool isBound = true) //åŸå­ã‚’è‡ªç”±è½ä¸‹ã•ã›ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         if (dropAtomYs[x] < y)
         {
-            //—‰ºˆÊ’u
-            AtomObject atomObject = stageAtom[x, y]; //Œ´q‚ğæ“¾
-            stageAtom[x, dropAtomYs[x]] = atomObject; //Œ³‚ÌŒ´q‚ğ•Û‘¶
-            stageAtomF[x + dropAtomYs[x] * M.Size.x] = (int)atomObject.AtomType + 1; //Œ´q”Ô†‚ğİ’è
-            stageAtom[x, y] = null; //Œ³‚ÌˆÊ’u‚ğnull‚É‚·‚é
-            stageAtomF[x + y * M.Size.x] = 0; //Œ´q”Ô†‚ğİ’è
+            //è½ä¸‹ä½ç½®
+            AtomObject atomObject = stageAtom[x, y]; //åŸå­ã‚’å–å¾—
+            stageAtom[x, dropAtomYs[x]] = atomObject; //å…ƒã®åŸå­ã‚’ä¿å­˜
+            stageAtomF[x + dropAtomYs[x] * M.Size.x] = (int)atomObject.AtomType + 1; //åŸå­ç•ªå·ã‚’è¨­å®š
+            stageAtom[x, y] = null; //å…ƒã®ä½ç½®ã‚’nullã«ã™ã‚‹
+            stageAtomF[x + y * M.Size.x] = 0; //åŸå­ç•ªå·ã‚’è¨­å®š
             var height = y - dropAtomYs[x];
             dropAtomYs[x]++;
-            //Œ´q‚ğˆÚ“®
+            //åŸå­ã‚’ç§»å‹•
             await DoFreeFalling(atomObject, height, dropAtomYs[x] - 1, isBound);
-        } 
+        }
         else
         {
             dropAtomYs[x]++;
@@ -932,7 +938,7 @@ public class PlayerBase : MonoBehaviour
     {
         var tween = atomObject.transform.DOLocalMoveY(y + leftBottomPosition.y, height * 0.02f)
             .SetEase(Ease.Linear)
-            .OnUpdate(() => 
+            .OnUpdate(() =>
             {
                 if (atomObject.transform.localPosition.y >= displayUpper + leftBottomPosition.y)
                 {
@@ -943,16 +949,17 @@ public class PlayerBase : MonoBehaviour
                     atomObject.Enabled();
                 }
             });
-        await tween.AsyncWaitForCompletion(); //ˆÚ“®ŠÔ
+        await tween.AsyncWaitForCompletion(); //ç§»å‹•æ™‚é–“
         var scale = atomObject.transform.localScale;
         scale.y *= isBound ? 0.87f : 0.91f;
         scale.x *= isBound ? 1.13f : 1.09f;
         tween = atomObject.transform.DOScale(scale, 0.15f)
             .SetLoops(2, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
-        await tween.AsyncWaitForCompletion();
+        tween.SetLink(gameObject);
+        await tween.AsyncWaitForCompletion().AsUniTask().AttachExternalCancellation(cts.Token);
     }
-    int DestroyGotDisturbanceNumber(int num) //‚¶‚á‚ÜŒ´q‚ğíœ‚·‚éƒƒ\ƒbƒh
+    int DestroyGotDisturbanceNumber(int num) //ã˜ã‚ƒã¾åŸå­ã‚’å‰Šé™¤ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         Vector3 vector3 = disturbancAtomPosition;
         var pass = num - gotDisturbanceNumber;
@@ -960,10 +967,10 @@ public class PlayerBase : MonoBehaviour
         gotDisturbanceNumber = Mathf.Max(gotDisturbanceNumber - num, 0);
         for (int i = start - 1; i >= gotDisturbanceNumber; i--)
         {
-            M.DisturbanceAtomObjects[i].UnEnabled(); //‚¶‚á‚ÜŒ´q‚ğíœ
+            M.DisturbanceAtomObjects[i].UnEnabled(); //ã˜ã‚ƒã¾åŸå­ã‚’å‰Šé™¤
             M.DisturbanceAtomObjects[i].transform.parent = M.StockAtoms.transform;
         }
-        if(start <= NormalMax) return pass;
+        if (start <= NormalMax) return pass;
         if (NormalMax < gotDisturbanceNumber)
         {
             for (int i = 1; i < gotDisturbanceNumber; i++)
@@ -982,7 +989,7 @@ public class PlayerBase : MonoBehaviour
         }
         return pass;
     }
-    bool DropGotDisturbanceNumber() //‚¶‚á‚ÜŒ´q‚ğ—‚Æ‚·ƒƒ\ƒbƒh
+    bool DropGotDisturbanceNumber() //ã˜ã‚ƒã¾åŸå­ã‚’è½ã¨ã™ãƒ¡ã‚½ãƒƒãƒ‰
     {
         if (gotDisturbanceNumber <= 0)
         {
@@ -992,7 +999,7 @@ public class PlayerBase : MonoBehaviour
         int height = M.Size.y;
         int count = 0;
         bool[] isSet = new bool[width];
-        for(int i = 0; i < gotDisturbanceNumber; i++)
+        for (int i = 0; i < gotDisturbanceNumber; i++)
         {
             M.DisturbanceAtomObjects[i].UnEnabled();
             M.DisturbanceAtomObjects[i].transform.parent = M.StockAtoms.transform;
@@ -1007,9 +1014,9 @@ public class PlayerBase : MonoBehaviour
                 {
                     var disturbanceAtomObject = atomObjectPool.Get();
                     disturbanceAtomObject.Set(M.DisturbanceAtomColor, M.DisturbanceAtom);
-                    SetFreeAtom(x, y, disturbanceAtomObject); //Œ´q‚ÌˆÊ’u‚ğİ’è
+                    SetFreeAtom(x, y, disturbanceAtomObject); //åŸå­ã®ä½ç½®ã‚’è¨­å®š
                     count++;
-                    if(count >= gotDisturbanceNumber)
+                    if (count >= gotDisturbanceNumber)
                     {
                         disturbancStartX = (x + 1) % width;
                         gotDisturbanceNumber = 0;
@@ -1018,8 +1025,8 @@ public class PlayerBase : MonoBehaviour
                 }
                 else
                 {
-                    isSet[x] = true; //–„‚Ü‚Á‚Ä‚¢‚é
-                    //‚·‚×‚Ä–„‚Ü‚Á‚Ä‚¢‚½‚ç
+                    isSet[x] = true; //åŸ‹ã¾ã£ã¦ã„ã‚‹
+                    //ã™ã¹ã¦åŸ‹ã¾ã£ã¦ã„ãŸã‚‰
                     var all = isSet.All(p => p);
                     if (all)
                     {
@@ -1033,19 +1040,19 @@ public class PlayerBase : MonoBehaviour
         gotDisturbanceNumber = 0;
         return true;
     }
-    void SetDisturbance(Vector3 center) //‚¨‚¶‚á‚ÜŒ´q‚ğƒZƒbƒg‚·‚éƒƒ\ƒbƒh
+    void SetDisturbance(Vector3 center) //ãŠã˜ã‚ƒã¾åŸå­ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        var disturbanceCount = point / 400 - passTotalDisturbanceNumber; //’Ç‰Á‚¶‚á‚ÜŒ´q
-        passTotalDisturbanceNumber = point / 400; //XV
+        var disturbanceCount = point / 400 - passTotalDisturbanceNumber; //è¿½åŠ ã˜ã‚ƒã¾åŸå­
+        passTotalDisturbanceNumber = point / 400; //æ›´æ–°
         if (disturbanceCount > 0)
         {
-            var disturbanceNumber = DestroyGotDisturbanceNumber(disturbanceCount); //‚¶‚á‚ÜŒ´q‚ğíœ
-            if (disturbanceNumber > 0) M.PassDisturbance(disturbanceNumber, this, center); //‚¶‚á‚ÜŒ´q‚Ì”‚ğ“n‚·
+            var disturbanceNumber = DestroyGotDisturbanceNumber(disturbanceCount); //ã˜ã‚ƒã¾åŸå­ã‚’å‰Šé™¤
+            if (disturbanceNumber > 0) M.PassDisturbance(disturbanceNumber, this, center); //ã˜ã‚ƒã¾åŸå­ã®æ•°ã‚’æ¸¡ã™
         }
     }
-    private void OnDestroy() //íœAƒ^ƒXƒN‚ğƒLƒƒƒ“ƒZƒ‹
+    protected virtual void OnDestroy() //å‰Šé™¤æ™‚ã€ã‚¿ã‚¹ã‚¯ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
     {
-        //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“‚ğƒLƒƒƒ“ƒZƒ‹
+        //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
         if (cts != null)
         {
             cts.Cancel();
@@ -1053,5 +1060,5 @@ public class PlayerBase : MonoBehaviour
             cts = null;
         }
     }
-#endregion ”ñŒöŠJƒƒ\ƒbƒh
+    #endregion éå…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
 }
