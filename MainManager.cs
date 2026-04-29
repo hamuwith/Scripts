@@ -30,6 +30,7 @@ public class MainManager : MonoBehaviour
     [SerializeField] float updateDropTimeRate; //落下時間更新率
     [SerializeField] GameObject stockAtoms; //原子ストック
     [SerializeField] float formulaRate; //揃えた化学式の得点倍率
+    [SerializeField] int disturbancePoint; //おじゃま原子を追加するポイント
     [SerializeField] TextMeshProUGUI countdown; //カウントダウン
     [SerializeField] RectTransform countdownRectTransform; //カウントダウン
     #endregion シリアライズフィールド
@@ -195,6 +196,7 @@ public class MainManager : MonoBehaviour
     public float DownAcceleration => downAcceleration; //下加速量
     public AtomObject AtomPrefab => atomPrefab; //原子プレハブ
     public GameObject StockAtoms => stockAtoms; //原子ストック
+    public int DisturbancePoint => disturbancePoint; //おじゃま原子を追加するポイント
     #endregion プロパティ
 
     #region 列挙体

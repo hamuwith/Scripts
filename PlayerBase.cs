@@ -1062,8 +1062,8 @@ public class PlayerBase : MonoBehaviour
     }
     void SetDisturbance(Vector3 center) //おじゃま原子をセットするメソッド
     {
-        var disturbanceCount = point / 400 - passTotalDisturbanceNumber; //追加じゃま原子
-        passTotalDisturbanceNumber = point / 400; //更新
+        var disturbanceCount = point / M.DisturbancePoint - passTotalDisturbanceNumber; //追加じゃま原子
+        passTotalDisturbanceNumber = point / M.DisturbancePoint; //更新
         if (disturbanceCount > 0)
         {
             var disturbanceNumber = DestroyGotDisturbanceNumber(disturbanceCount); //じゃま原子を削除
