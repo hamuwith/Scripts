@@ -7,115 +7,115 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.SceneManagement;
-//–¢À‘•‚Í'***'‚Å•\‹L
+//æœªå®Ÿè£…ã¯'***'ã§è¡¨è¨˜
 
 public class MainManager : MonoBehaviour
 {
-    #region ƒVƒŠƒAƒ‰ƒCƒYƒtƒB[ƒ‹ƒh
-    [SerializeField] Vector2Int size; //ƒQ[ƒ€‚Ì•‚Æ‚‚³
-    [SerializeField] int bonusRate; //ƒ{[ƒiƒX‚ÌŠ|‚¯—¦
-    [SerializeField] Vector2Int startPosition; //Œ´qŠJnˆÊ’u
-    [SerializeField] float dropTime; //—‰ºŠÔ
-    [SerializeField] float continuousMoveTime; //˜A‘±ˆÚ“®ŠÔ
-    [SerializeField] float downAcceleration; //‰º‰Á‘¬—Ê
-    [SerializeField] AtomObject atomPrefab; //Œ´qƒvƒŒƒnƒu
-    [SerializeField] SpriteRenderer dropPointPrefab; //—‰ºˆÊ’uƒvƒŒƒnƒu
-    [SerializeField] int[] chainPointRates; //˜A½”‚Ì“¾“_”{—¦
-    [SerializeField] int[] comboPointRates; //ƒRƒ“ƒ{”‚Ì“¾“_”{—¦
-    [SerializeField] AtomType disturbanceAtom; //‚¨‚¶‚á‚ÜŒ´q
-    [SerializeField] AtomType fullClearAtom; //‘SÁ‚µŒ´q
-    [SerializeField] float disturbancAtomsSize; //‚¶‚á‚ÜŒ´q‚ÌƒTƒCƒY
-    [SerializeField] int bonusAtomMin; //ƒ{[ƒiƒX‚Ì‰»Šw®‚ÌŒ´q”‚Ì‰ºŒÀ
-    [SerializeField] float updateDropTime; //—‰ºŠÔXV
-    [SerializeField] float updateDropTimeRate; //—‰ºŠÔXV—¦
-    [SerializeField] GameObject stockAtoms; //Œ´qƒXƒgƒbƒN
-    [SerializeField] float formulaRate; //‘µ‚¦‚½‰»Šw®‚Ì“¾“_”{—¦
-    [SerializeField] TextMeshProUGUI countdown; //ƒJƒEƒ“ƒgƒ_ƒEƒ“
-    [SerializeField] RectTransform countdownRectTransform; //ƒJƒEƒ“ƒgƒ_ƒEƒ“
-    #endregion ƒVƒŠƒAƒ‰ƒCƒYƒtƒB[ƒ‹ƒh
+    #region ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+    [SerializeField] Vector2Int size; //ã‚²ãƒ¼ãƒ ã®å¹…ã¨é«˜ã•
+    [SerializeField] int bonusRate; //ãƒœãƒ¼ãƒŠã‚¹ã®æ›ã‘ç‡
+    [SerializeField] Vector2Int startPosition; //åŸå­é–‹å§‹ä½ç½®
+    [SerializeField] float dropTime; //è½ä¸‹æ™‚é–“
+    [SerializeField] float continuousMoveTime; //é€£ç¶šç§»å‹•æ™‚é–“
+    [SerializeField] float downAcceleration; //ä¸‹åŠ é€Ÿé‡
+    [SerializeField] AtomObject atomPrefab; //åŸå­ãƒ—ãƒ¬ãƒãƒ–
+    [SerializeField] SpriteRenderer dropPointPrefab; //è½ä¸‹ä½ç½®ãƒ—ãƒ¬ãƒãƒ–
+    [SerializeField] int[] chainPointRates; //é€£é–æ•°ã®å¾—ç‚¹å€ç‡
+    [SerializeField] int[] comboPointRates; //ã‚³ãƒ³ãƒœæ•°ã®å¾—ç‚¹å€ç‡
+    [SerializeField] AtomType disturbanceAtom; //ãŠã˜ã‚ƒã¾åŸå­
+    [SerializeField] AtomType fullClearAtom; //å…¨æ¶ˆã—åŸå­
+    [SerializeField] float disturbancAtomsSize; //ã˜ã‚ƒã¾åŸå­ã®ã‚µã‚¤ã‚º
+    [SerializeField] int bonusAtomMin; //ãƒœãƒ¼ãƒŠã‚¹ã®åŒ–å­¦å¼ã®åŸå­æ•°ã®ä¸‹é™
+    [SerializeField] float updateDropTime; //è½ä¸‹æ™‚é–“æ›´æ–°
+    [SerializeField] float updateDropTimeRate; //è½ä¸‹æ™‚é–“æ›´æ–°ç‡
+    [SerializeField] GameObject stockAtoms; //åŸå­ã‚¹ãƒˆãƒƒã‚¯
+    [SerializeField] float formulaRate; //æƒãˆãŸåŒ–å­¦å¼ã®å¾—ç‚¹å€ç‡
+    [SerializeField] TextMeshProUGUI countdown; //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³
+    [SerializeField] RectTransform countdownRectTransform; //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³
+    #endregion ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ŒöŠJƒtƒB[ƒ‹ƒh
-    public static MainManager Instance { get; private set; } //ƒCƒ“ƒXƒ^ƒ“ƒX‚ğ•Û‚·‚éƒvƒƒpƒeƒB
+    #region å…¬é–‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+    public static MainManager Instance { get; private set; } //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä¿æŒã™ã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     public FormulaObject[] Formulas { get; private set; } = new FormulaObject[]
     {
-        new FormulaObject("ƒtƒb‰»…‘f", "HF", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.F, 1 } }),
-        new FormulaObject("‰–‰»…‘f", "HCl", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.Cl, 1 } }),
-        new FormulaObject("L‰»…‘f", "HBr", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.Br, 1 } }),
-        new FormulaObject("ƒˆƒE‰»…‘f", "HI", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.I, 1 } }),
-        new FormulaObject("‰–‰»ƒiƒgƒŠƒEƒ€", "NaCl", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.Cl, 1 } }),
-        new FormulaObject("‰–‰»ƒJƒŠƒEƒ€", "KCl", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.Cl, 1 } }),
-        new FormulaObject("‰–‰»‹â", "AgCl", new Dictionary<AtomType, int> { { AtomType.Ag, 1 }, { AtomType.Cl, 1 } }),
-        new FormulaObject("—°‰»“º", "CuS", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.S, 1 } }),
-        new FormulaObject("—°‰»“S", "FeS", new Dictionary<AtomType, int> { { AtomType.Fe, 1 }, { AtomType.S, 1 } }),
-        new FormulaObject("—°‰»ˆŸ‰”", "ZnS", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.S, 1 } }),
-        new FormulaObject("—°‰»ƒJƒ‹ƒVƒEƒ€", "CaS", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.S, 1 } }),
-        new FormulaObject("_‰»ƒ}ƒOƒlƒVƒEƒ€", "MgO", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.O, 1 } }),
-        new FormulaObject("_‰»ƒJƒ‹ƒVƒEƒ€", "CaO", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.O, 1 } }),
-        new FormulaObject("_‰»ˆŸ‰”", "ZnO", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.O, 1 } }),
-        new FormulaObject("ˆê_‰»’‚‘f", "NO", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.O, 1 } }),
-        new FormulaObject("ˆê_‰»’Y‘f", "CO", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.O, 1 } }),
-        new FormulaObject("…", "H<sub>2</sub>O", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.O, 1 } }),
-        new FormulaObject("—°‰»…‘f", "H<sub>2</sub>S", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.S, 1 } }),
-        new FormulaObject("“ñ_‰»’Y‘f", "CO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.O, 2 } }),
-        new FormulaObject("‰–‰»ƒ}ƒOƒlƒVƒEƒ€", "MgCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.Cl, 2 } }),
-        new FormulaObject("‰–‰»ƒJƒ‹ƒVƒEƒ€", "CaCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.Cl, 2 } }),
-        new FormulaObject("‰–‰»ˆŸ‰”", "ZnCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.Cl, 2 } }),
-        new FormulaObject("‰–‰»“º(II)", "CuCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.Cl, 2 } }),
-        new FormulaObject("—°‰»ƒiƒgƒŠƒEƒ€", "Na<sub>2</sub>S", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.S, 1 } }),
-        new FormulaObject("…_‰»ƒiƒgƒŠƒEƒ€", "NaOH", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.O, 1 }, { AtomType.H, 1 } }),
-        new FormulaObject("…_‰»ƒJƒŠƒEƒ€", "KOH", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.O, 1 }, { AtomType.H, 1 } }),
-        new FormulaObject("‰–‰»ƒoƒŠƒEƒ€", "BaCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.Cl, 2 } }),
-        new FormulaObject("“ñ_‰»’‚‘f", "NO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.O, 2 } }),
-        new FormulaObject("“ñ_‰»—°‰©", "SO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.S, 1 }, { AtomType.O, 2 } }),
-        new FormulaObject("‰ß_‰»…‘f", "H<sub>2</sub>O<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.O, 2 } }),
-        new FormulaObject("ƒAƒ“ƒ‚ƒjƒA", "NH<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.H, 3 } }),
-        new FormulaObject("‰–‰»ƒAƒ‹ƒ~ƒjƒEƒ€", "AlCl<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 1 }, { AtomType.Cl, 3 } }),
-        new FormulaObject("É_", "HNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("É_‹â", "AgNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ag, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("É_ƒiƒgƒŠƒEƒ€", "NaNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("É_ƒJƒŠƒEƒ€", "KNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("’Y_ƒ}ƒOƒlƒVƒEƒ€", "MgCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("’Y_ƒJƒ‹ƒVƒEƒ€", "CaCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("’Y_ƒoƒŠƒEƒ€", "BaCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("…_‰»ƒJƒ‹ƒVƒEƒ€", "Ca(OH)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.O, 2 }, { AtomType.H, 2 } }),
-        new FormulaObject("…_‰»ƒoƒŠƒEƒ€", "Ba(OH)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.O, 2 }, { AtomType.H, 2 } }),
-        new FormulaObject("_‰»ƒAƒ‹ƒ~ƒjƒEƒ€", "Al<sub>2</sub>O<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 2 }, { AtomType.O, 3 } }),
-        new FormulaObject("_‰»“S(III)", "Fe<sub>2</sub>O<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Fe, 2 }, { AtomType.O, 3 } }),
-        new FormulaObject("ƒƒ^ƒ“", "CH<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.H, 4 } }),
-        new FormulaObject("’Y_", "H<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("‰–‰»ƒAƒ“ƒ‚ƒjƒEƒ€", "NH<sub>4</sub>Cl", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.H, 4 }, { AtomType.Cl, 1 } }),
-        new FormulaObject("—°_“º(II)", "CuSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("—°_“S(II)", "FeSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Fe, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("—°_ƒJƒ‹ƒVƒEƒ€", "CaSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("’Y_ƒiƒgƒŠƒEƒ€", "Na<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-        new FormulaObject("ƒGƒ`ƒŒƒ“", "C<sub>2</sub>H<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 4 } }),
-        new FormulaObject("—°_", "H<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("—°_ƒiƒgƒŠƒEƒ€", "Na<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("—°_ƒJƒŠƒEƒ€", "K<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.K, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("…_‰»ƒAƒ‹ƒ~ƒjƒEƒ€", "Al(OH)<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 1 }, { AtomType.O, 3 }, { AtomType.H, 3 } }),
-        new FormulaObject("|_", "CH<sub>3</sub>COOH", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 4 }, { AtomType.O, 2 } }),
-        new FormulaObject("ƒŠƒ“_", "H<sub>3</sub>PO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.H, 3 }, { AtomType.P, 1 }, { AtomType.O, 4 } }),
-        new FormulaObject("|_ƒiƒgƒŠƒEƒ€", "CH<sub>3</sub>COONa", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 3 }, { AtomType.O, 2 }, { AtomType.Na, 1 } }),
-        new FormulaObject("ƒGƒ^ƒ“", "C<sub>2</sub>H<sub>6</sub>", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 6 } }),
-        new FormulaObject("É_“º(II)", "Cu(NO<sub>3</sub>)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.N, 2 }, { AtomType.O, 6 } }),
-        new FormulaObject("É_ƒJƒ‹ƒVƒEƒ€", "Ca(NO<sub>3</sub>)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.N, 2 }, { AtomType.O, 6 } }),
-        new FormulaObject("ƒvƒƒsƒŒƒ“", "C<sub>3</sub>H<sub>6</sub>", new Dictionary<AtomType, int> { { AtomType.C, 3 }, { AtomType.H, 6 } }),
-        new FormulaObject("ƒvƒƒpƒ“", "C<sub>3</sub>H<sub>8</sub>", new Dictionary<AtomType, int> { { AtomType.C, 3 }, { AtomType.H, 8 } }),
-        new FormulaObject("’Y_ƒAƒ“ƒ‚ƒjƒEƒ€", "(NH<sub>4</sub>)<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.N, 2 }, { AtomType.H, 8 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
-    }; //‰»Šw®‚Ì”z—ñ
-    [HideInInspector] public event Action<AtomType> onCreateAtomType; //Œ´q¶¬ƒCƒxƒ“ƒg
-    #endregion ŒöŠJƒtƒB[ƒ‹ƒh
+        new FormulaObject("ãƒ•ãƒƒåŒ–æ°´ç´ ", "HF", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.F, 1 } }),
+        new FormulaObject("å¡©åŒ–æ°´ç´ ", "HCl", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.Cl, 1 } }),
+        new FormulaObject("è‡­åŒ–æ°´ç´ ", "HBr", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.Br, 1 } }),
+        new FormulaObject("ãƒ¨ã‚¦åŒ–æ°´ç´ ", "HI", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.I, 1 } }),
+        new FormulaObject("å¡©åŒ–ãƒŠãƒˆãƒªã‚¦ãƒ ", "NaCl", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.Cl, 1 } }),
+        new FormulaObject("å¡©åŒ–ã‚«ãƒªã‚¦ãƒ ", "KCl", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.Cl, 1 } }),
+        new FormulaObject("å¡©åŒ–éŠ€", "AgCl", new Dictionary<AtomType, int> { { AtomType.Ag, 1 }, { AtomType.Cl, 1 } }),
+        new FormulaObject("ç¡«åŒ–éŠ…", "CuS", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.S, 1 } }),
+        new FormulaObject("ç¡«åŒ–é‰„", "FeS", new Dictionary<AtomType, int> { { AtomType.Fe, 1 }, { AtomType.S, 1 } }),
+        new FormulaObject("ç¡«åŒ–äºœé‰›", "ZnS", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.S, 1 } }),
+        new FormulaObject("ç¡«åŒ–ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "CaS", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.S, 1 } }),
+        new FormulaObject("é…¸åŒ–ãƒã‚°ãƒã‚·ã‚¦ãƒ ", "MgO", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.O, 1 } }),
+        new FormulaObject("é…¸åŒ–ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "CaO", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.O, 1 } }),
+        new FormulaObject("é…¸åŒ–äºœé‰›", "ZnO", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.O, 1 } }),
+        new FormulaObject("ä¸€é…¸åŒ–çª’ç´ ", "NO", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.O, 1 } }),
+        new FormulaObject("ä¸€é…¸åŒ–ç‚­ç´ ", "CO", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.O, 1 } }),
+        new FormulaObject("æ°´", "H<sub>2</sub>O", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.O, 1 } }),
+        new FormulaObject("ç¡«åŒ–æ°´ç´ ", "H<sub>2</sub>S", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.S, 1 } }),
+        new FormulaObject("äºŒé…¸åŒ–ç‚­ç´ ", "CO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.O, 2 } }),
+        new FormulaObject("å¡©åŒ–ãƒã‚°ãƒã‚·ã‚¦ãƒ ", "MgCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.Cl, 2 } }),
+        new FormulaObject("å¡©åŒ–ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "CaCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.Cl, 2 } }),
+        new FormulaObject("å¡©åŒ–äºœé‰›", "ZnCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Zn, 1 }, { AtomType.Cl, 2 } }),
+        new FormulaObject("å¡©åŒ–éŠ…(II)", "CuCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.Cl, 2 } }),
+        new FormulaObject("ç¡«åŒ–ãƒŠãƒˆãƒªã‚¦ãƒ ", "Na<sub>2</sub>S", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.S, 1 } }),
+        new FormulaObject("æ°´é…¸åŒ–ãƒŠãƒˆãƒªã‚¦ãƒ ", "NaOH", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.O, 1 }, { AtomType.H, 1 } }),
+        new FormulaObject("æ°´é…¸åŒ–ã‚«ãƒªã‚¦ãƒ ", "KOH", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.O, 1 }, { AtomType.H, 1 } }),
+        new FormulaObject("å¡©åŒ–ãƒãƒªã‚¦ãƒ ", "BaCl<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.Cl, 2 } }),
+        new FormulaObject("äºŒé…¸åŒ–çª’ç´ ", "NO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.O, 2 } }),
+        new FormulaObject("äºŒé…¸åŒ–ç¡«é»„", "SO<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.S, 1 }, { AtomType.O, 2 } }),
+        new FormulaObject("éé…¸åŒ–æ°´ç´ ", "H<sub>2</sub>O<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.O, 2 } }),
+        new FormulaObject("ã‚¢ãƒ³ãƒ¢ãƒ‹ã‚¢", "NH<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.H, 3 } }),
+        new FormulaObject("å¡©åŒ–ã‚¢ãƒ«ãƒŸãƒ‹ã‚¦ãƒ ", "AlCl<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 1 }, { AtomType.Cl, 3 } }),
+        new FormulaObject("ç¡é…¸", "HNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.H, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç¡é…¸éŠ€", "AgNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ag, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç¡é…¸ãƒŠãƒˆãƒªã‚¦ãƒ ", "NaNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç¡é…¸ã‚«ãƒªã‚¦ãƒ ", "KNO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.K, 1 }, { AtomType.N, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç‚­é…¸ãƒã‚°ãƒã‚·ã‚¦ãƒ ", "MgCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Mg, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç‚­é…¸ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "CaCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ç‚­é…¸ãƒãƒªã‚¦ãƒ ", "BaCO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("æ°´é…¸åŒ–ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "Ca(OH)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.O, 2 }, { AtomType.H, 2 } }),
+        new FormulaObject("æ°´é…¸åŒ–ãƒãƒªã‚¦ãƒ ", "Ba(OH)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ba, 1 }, { AtomType.O, 2 }, { AtomType.H, 2 } }),
+        new FormulaObject("é…¸åŒ–ã‚¢ãƒ«ãƒŸãƒ‹ã‚¦ãƒ ", "Al<sub>2</sub>O<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 2 }, { AtomType.O, 3 } }),
+        new FormulaObject("é…¸åŒ–é‰„(III)", "Fe<sub>2</sub>O<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Fe, 2 }, { AtomType.O, 3 } }),
+        new FormulaObject("ãƒ¡ã‚¿ãƒ³", "CH<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.C, 1 }, { AtomType.H, 4 } }),
+        new FormulaObject("ç‚­é…¸", "H<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("å¡©åŒ–ã‚¢ãƒ³ãƒ¢ãƒ‹ã‚¦ãƒ ", "NH<sub>4</sub>Cl", new Dictionary<AtomType, int> { { AtomType.N, 1 }, { AtomType.H, 4 }, { AtomType.Cl, 1 } }),
+        new FormulaObject("ç¡«é…¸éŠ…(II)", "CuSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("ç¡«é…¸é‰„(II)", "FeSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Fe, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("ç¡«é…¸ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "CaSO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("ç‚­é…¸ãƒŠãƒˆãƒªã‚¦ãƒ ", "Na<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+        new FormulaObject("ã‚¨ãƒãƒ¬ãƒ³", "C<sub>2</sub>H<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 4 } }),
+        new FormulaObject("ç¡«é…¸", "H<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.H, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("ç¡«é…¸ãƒŠãƒˆãƒªã‚¦ãƒ ", "Na<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.Na, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("ç¡«é…¸ã‚«ãƒªã‚¦ãƒ ", "K<sub>2</sub>SO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.K, 2 }, { AtomType.S, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("æ°´é…¸åŒ–ã‚¢ãƒ«ãƒŸãƒ‹ã‚¦ãƒ ", "Al(OH)<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.Al, 1 }, { AtomType.O, 3 }, { AtomType.H, 3 } }),
+        new FormulaObject("é…¢é…¸", "CH<sub>3</sub>COOH", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 4 }, { AtomType.O, 2 } }),
+        new FormulaObject("ãƒªãƒ³é…¸", "H<sub>3</sub>PO<sub>4</sub>", new Dictionary<AtomType, int> { { AtomType.H, 3 }, { AtomType.P, 1 }, { AtomType.O, 4 } }),
+        new FormulaObject("é…¢é…¸ãƒŠãƒˆãƒªã‚¦ãƒ ", "CH<sub>3</sub>COONa", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 3 }, { AtomType.O, 2 }, { AtomType.Na, 1 } }),
+        new FormulaObject("ã‚¨ã‚¿ãƒ³", "C<sub>2</sub>H<sub>6</sub>", new Dictionary<AtomType, int> { { AtomType.C, 2 }, { AtomType.H, 6 } }),
+        new FormulaObject("ç¡é…¸éŠ…(II)", "Cu(NO<sub>3</sub>)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Cu, 1 }, { AtomType.N, 2 }, { AtomType.O, 6 } }),
+        new FormulaObject("ç¡é…¸ã‚«ãƒ«ã‚·ã‚¦ãƒ ", "Ca(NO<sub>3</sub>)<sub>2</sub>", new Dictionary<AtomType, int> { { AtomType.Ca, 1 }, { AtomType.N, 2 }, { AtomType.O, 6 } }),
+        new FormulaObject("ãƒ—ãƒ­ãƒ”ãƒ¬ãƒ³", "C<sub>3</sub>H<sub>6</sub>", new Dictionary<AtomType, int> { { AtomType.C, 3 }, { AtomType.H, 6 } }),
+        new FormulaObject("ãƒ—ãƒ­ãƒ‘ãƒ³", "C<sub>3</sub>H<sub>8</sub>", new Dictionary<AtomType, int> { { AtomType.C, 3 }, { AtomType.H, 8 } }),
+        new FormulaObject("ç‚­é…¸ã‚¢ãƒ³ãƒ¢ãƒ‹ã‚¦ãƒ ", "(NH<sub>4</sub>)<sub>2</sub>CO<sub>3</sub>", new Dictionary<AtomType, int> { { AtomType.N, 2 }, { AtomType.H, 8 }, { AtomType.C, 1 }, { AtomType.O, 3 } }),
+    }; //åŒ–å­¦å¼ã®é…åˆ—
+    [HideInInspector] public event Action<AtomType> onCreateAtomType; //åŸå­ç”Ÿæˆã‚¤ãƒ™ãƒ³ãƒˆ
+    #endregion å…¬é–‹ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ƒvƒ‰ƒCƒx[ƒgƒtƒB[ƒ‹ƒh 
-    int[] atomWeight; //Œ´q‚Ìd‚İ
-    State currentState; //Œ»İ‚Ìó‘Ô‚ğŠÇ—‚·‚é•Ï”
-    int fullWeight; //d‚İ‚Ì‡Œv
-    PlayerBase[] players; //ƒvƒŒƒCƒ„[
-    float gameTime; //ƒQ[ƒ€ŠÔ
-    FormulaObject bonusFormula; //ƒ{[ƒiƒX‰»Šw®
-    float updateDropCount; //—‰ºXVƒJƒEƒ“ƒg
-    CancellationTokenSource cts; //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“
-    readonly Color disturbanceAtomColor = new Color32(0x22, 0x22, 0x22, 255);    //‚¨‚¶‚á‚ÜF
+    #region ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ 
+    int[] atomWeight; //åŸå­ã®é‡ã¿
+    State currentState; //ç¾åœ¨ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹å¤‰æ•°
+    int fullWeight; //é‡ã¿ã®åˆè¨ˆ
+    PlayerBase[] players; //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+    float gameTime; //ã‚²ãƒ¼ãƒ æ™‚é–“
+    FormulaObject bonusFormula; //ãƒœãƒ¼ãƒŠã‚¹åŒ–å­¦å¼
+    float updateDropCount; //è½ä¸‹æ›´æ–°ã‚«ã‚¦ãƒ³ãƒˆ
+    CancellationTokenSource cts; //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³
+    readonly Color disturbanceAtomColor = new Color32(0x22, 0x22, 0x22, 255);    //ãŠã˜ã‚ƒã¾è‰²
     static readonly Dictionary<AtomGroupType, Color> groupColors = new Dictionary<AtomGroupType, Color>
     {
         { AtomGroupType.Hydrogen,           new Color32(0x00, 0xCF, 0xFF, 255) },
@@ -127,16 +127,16 @@ public class MainManager : MonoBehaviour
         { AtomGroupType.AlkalineEarthMetal, new Color32(0xD1, 0xC4, 0xE9, 255) },
         { AtomGroupType.TransitionMetal,    new Color32(0x3F, 0x51, 0xB5, 255) },
         { AtomGroupType.SimpleMetal,        new Color32(0xB0, 0xBE, 0xC5, 255) },
-        { AtomGroupType.None,               Color.clear }
-    }; //Œ´q‚ÌF‚ğŠÇ—‚·‚é«‘
-    #endregion ƒvƒ‰ƒCƒx[ƒgƒtƒB[ƒ‹ƒh
+        { AtomGroupType.None,               new Color32(0x22, 0x22, 0x22, 255) }
+    }; //åŸå­ã®è‰²ã‚’ç®¡ç†ã™ã‚‹è¾æ›¸
+    #endregion ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
 
-    #region ’è”
-    public const int NormalMax = 8; //‚¶‚á‚Ü•’Ê•\¦‚ÌÅ‘å’l
-    #endregion ’è”
+    #region å®šæ•°
+    public const int NormalMax = 8; //ã˜ã‚ƒã¾æ™®é€šè¡¨ç¤ºã®æœ€å¤§å€¤
+    #endregion å®šæ•°
 
-    #region ƒvƒƒpƒeƒB
-    public State CurrentState //Œ»İ‚Ìó‘Ô‚ğæ“¾‚Ü‚½‚Íİ’è‚·‚éƒvƒƒpƒeƒB
+    #region ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+    public State CurrentState //ç¾åœ¨ã®çŠ¶æ…‹ã‚’å–å¾—ã¾ãŸã¯è¨­å®šã™ã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
     {
         get
         {
@@ -144,60 +144,60 @@ public class MainManager : MonoBehaviour
         }
         private set
         {
-            if (currentState == value) return; //ó‘Ô‚ª•Ï‚í‚ç‚È‚¢ê‡‚Í‰½‚à‚µ‚È‚¢
+            if (currentState == value) return; //çŠ¶æ…‹ãŒå¤‰ã‚ã‚‰ãªã„å ´åˆã¯ä½•ã‚‚ã—ãªã„
             currentState = value;
             switch (currentState)
             {
                 case State.Ready:
-                    // Readyó‘Ô‚Ìˆ—
+                    // ReadyçŠ¶æ…‹ã®å‡¦ç†
                     Countdown().Forget();
                     break;
                 case State.Play:
-                    // Playó‘Ô‚Ìˆ—
+                    // PlayçŠ¶æ…‹ã®å‡¦ç†
                     break;
                 case State.Pause:
-                    // Pauseó‘Ô‚Ìˆ—
+                    // PauseçŠ¶æ…‹ã®å‡¦ç†
                     break;
                 case State.Result:
-                    // Resultó‘Ô‚Ìˆ—
+                    // ResultçŠ¶æ…‹ã®å‡¦ç†
                     break;
                 default:
                     break;
             }
         }
     }
-    public AtomType DisturbanceAtom => disturbanceAtom; //‚¶‚á‚ÜŒ´qí•Ê
-    public AtomType FullClearAtom => fullClearAtom; //‘SÁ‚µŒ´qí•Ê
-    public int Level { get; set; } //ƒQ[ƒ€‚ÌƒŒƒxƒ‹‚ğŠÇ—‚·‚éƒvƒƒpƒeƒB
-    public int ChainPointRatesLength //˜A½—¦‚Ì’·‚³
+    public AtomType DisturbanceAtom => disturbanceAtom; //ã˜ã‚ƒã¾åŸå­ç¨®åˆ¥
+    public AtomType FullClearAtom => fullClearAtom; //å…¨æ¶ˆã—åŸå­ç¨®åˆ¥
+    public int Level { get; set; } //ã‚²ãƒ¼ãƒ ã®ãƒ¬ãƒ™ãƒ«ã‚’ç®¡ç†ã™ã‚‹ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
+    public int ChainPointRatesLength //é€£é–ç‡ã®é•·ã•
     {
         get
         {
             return chainPointRates.Length;
         }
     }
-    public int ComboPointRatesLength //ƒRƒ“ƒ{—¦‚Ì’·‚³
+    public int ComboPointRatesLength //ã‚³ãƒ³ãƒœç‡ã®é•·ã•
     {
         get
         {
             return comboPointRates.Length;
         }
     }
-    public float DisturbancAtomsSize => disturbancAtomsSize; //‚¶‚á‚ÜŒ´q‚ÌƒTƒCƒY
-    public List<AtomObject> DisturbanceAtomObjects { get; set; } //‚¨‚¶‚á‚ÜŒ´q‚ğŠÇ—‚·‚é”z—ñ
-    public int StageSize => size.x * size.y; //ƒXƒe[ƒWƒTƒCƒY
-    public Color DisturbanceAtomColor => disturbanceAtomColor; //ƒXƒe[ƒW‚Ì•
-    public SpriteRenderer DropPointPrefab => dropPointPrefab; //—‰ºˆÊ’uƒvƒŒƒnƒu
-    public Vector2Int Size => size; //ƒQ[ƒ€‚Ì•‚Æ‚‚³
-    public Vector2Int StartPosition => startPosition; //Œ´qŠJnˆÊ’u
-    public float DropTime => dropTime; //—‰ºŠÔ
-    public float ContinuousMoveTime => continuousMoveTime; //˜A‘±ˆÚ“®ŠÔ
-    public float DownAcceleration => downAcceleration; //‰º‰Á‘¬—Ê
-    public AtomObject AtomPrefab => atomPrefab; //Œ´qƒvƒŒƒnƒu
-    public GameObject StockAtoms => stockAtoms; //Œ´qƒXƒgƒbƒN
-    #endregion ƒvƒƒpƒeƒB
+    public float DisturbancAtomsSize => disturbancAtomsSize; //ã˜ã‚ƒã¾åŸå­ã®ã‚µã‚¤ã‚º
+    public List<AtomObject> DisturbanceAtomObjects { get; set; } //ãŠã˜ã‚ƒã¾åŸå­ã‚’ç®¡ç†ã™ã‚‹é…åˆ—
+    public int StageSize => size.x * size.y; //ã‚¹ãƒ†ãƒ¼ã‚¸ã‚µã‚¤ã‚º
+    public Color DisturbanceAtomColor => disturbanceAtomColor; //ã‚¹ãƒ†ãƒ¼ã‚¸ã®å¹…
+    public SpriteRenderer DropPointPrefab => dropPointPrefab; //è½ä¸‹ä½ç½®ãƒ—ãƒ¬ãƒãƒ–
+    public Vector2Int Size => size; //ã‚²ãƒ¼ãƒ ã®å¹…ã¨é«˜ã•
+    public Vector2Int StartPosition => startPosition; //åŸå­é–‹å§‹ä½ç½®
+    public float DropTime => dropTime; //è½ä¸‹æ™‚é–“
+    public float ContinuousMoveTime => continuousMoveTime; //é€£ç¶šç§»å‹•æ™‚é–“
+    public float DownAcceleration => downAcceleration; //ä¸‹åŠ é€Ÿé‡
+    public AtomObject AtomPrefab => atomPrefab; //åŸå­ãƒ—ãƒ¬ãƒãƒ–
+    public GameObject StockAtoms => stockAtoms; //åŸå­ã‚¹ãƒˆãƒƒã‚¯
+    #endregion ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£
 
-    #region —ñ‹“‘Ì
+    #region åˆ—æŒ™ä½“
     public enum State
     {
         None,
@@ -205,7 +205,7 @@ public class MainManager : MonoBehaviour
         Play,
         Pause,
         Result,
-    } //ƒQ[ƒ€‚Ìó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^
+    } //ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹
     public enum AtomType
     {
         H,
@@ -228,9 +228,10 @@ public class MainManager : MonoBehaviour
         Ag,
         Fe,
         Al,
+        Oj,
         None,
-    } //Œ´q‚Ìí—Ş‚ğŠÇ—‚·‚é—ñ‹“Œ^
-    public enum AtomGroupType //Œ´q‚ÌƒOƒ‹[ƒv‚ğŠÇ—‚·‚é—ñ‹“Œ^
+    } //åŸå­ã®ç¨®é¡ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹
+    public enum AtomGroupType //åŸå­ã®ã‚°ãƒ«ãƒ¼ãƒ—ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹
     {
         Hydrogen = 1,
         Halogen,
@@ -243,48 +244,48 @@ public class MainManager : MonoBehaviour
         SimpleMetal,
         None
     }
-    #endregion —ñ‹“‘Ì
+    #endregion åˆ—æŒ™ä½“
 
-    #region UnityƒCƒxƒ“ƒg
+    #region Unityã‚¤ãƒ™ãƒ³ãƒˆ
     private void Awake()
     {
         Instance = this;
     }
     private void Start()
     {
-        //ƒQ[ƒ€‚Ì‰Šú‰»
+        //ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–
         Init();
         for (int i = 0; i < players.Length; i++)
         {
-            players[i].Start0(i); // ƒvƒŒƒCƒ„[‚Ì‰Šú‰»
+            players[i].Start0(i); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–
         }
-        CurrentState = State.Ready; //ƒQ[ƒ€‚Ìó‘Ô‚ğ‰Šú‰»
+        CurrentState = State.Ready; //ã‚²ãƒ¼ãƒ ã®çŠ¶æ…‹ã‚’åˆæœŸåŒ–
     }
     private void Update()
     {
         switch (CurrentState)
         {
             case State.Ready:
-                // Readyó‘Ô‚Ìˆ—
-                //Ÿ‚ÌŒ´q‚Ü‚Å‚ğƒZƒbƒg
+                // ReadyçŠ¶æ…‹ã®å‡¦ç†
+                //æ¬¡ã®åŸå­ã¾ã§ã‚’ã‚»ãƒƒãƒˆ
                 foreach (var player in players)
                 {
-                    player.ReadyAtom(); //Œ´q‚ğƒZƒbƒg
+                    player.ReadyAtom(); //åŸå­ã‚’ã‚»ãƒƒãƒˆ
                 }
                 break;
             case State.Play:
-                // Playó‘Ô‚Ìˆ—
-                UpdateGameTime(); //ƒQ[ƒ€ŠÔ‚ğXV
+                // PlayçŠ¶æ…‹ã®å‡¦ç†
+                UpdateGameTime(); //ã‚²ãƒ¼ãƒ æ™‚é–“ã‚’æ›´æ–°
                 foreach (var player in players)
                 {
-                    player.UpdatePlayState(); // ƒvƒŒƒCƒ„[‚Ìó‘Ô‚ğXV
+                    player.UpdatePlayState(); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®çŠ¶æ…‹ã‚’æ›´æ–°
                 }
                 break;
             case State.Pause:
-                // Pauseó‘Ô‚Ìˆ—
+                // PauseçŠ¶æ…‹ã®å‡¦ç†
                 break;
             case State.Result:
-                // Resultó‘Ô‚Ìˆ—
+                // ResultçŠ¶æ…‹ã®å‡¦ç†
                 break;
             default:
                 break;
@@ -292,86 +293,86 @@ public class MainManager : MonoBehaviour
     }
     private void OnDestroy()
     {
-        //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“‚ğƒLƒƒƒ“ƒZƒ‹
+        //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
         if (cts != null)
         {
             cts.Cancel();
             cts.Dispose();
             cts = null;
         }
-    } //ƒ^ƒXƒN‚ÌƒLƒƒƒ“ƒZƒ‹
-    #endregion UnityƒCƒxƒ“ƒg
+    } //ã‚¿ã‚¹ã‚¯ã®ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+    #endregion Unityã‚¤ãƒ™ãƒ³ãƒˆ
 
-    #region ŒöŠJƒƒ\ƒbƒh 
-    public void CreateAtoms() //ƒyƒAŒ´q‚ğ¶¬‚·‚éƒƒ\ƒbƒh
+    #region å…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰ 
+    public void CreateAtoms() //ãƒšã‚¢åŸå­ã‚’ç”Ÿæˆã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        //d‚İ‚É‰‚¶‚ÄŒ´q‚Ìí—Ş‚ğŒˆ’è
-        int atomCount = UnityEngine.Random.Range(0, fullWeight); //Œ´q‚Ìí—Ş‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
+        //é‡ã¿ã«å¿œã˜ã¦åŸå­ã®ç¨®é¡ã‚’æ±ºå®š
+        int atomCount = UnityEngine.Random.Range(0, fullWeight); //åŸå­ã®ç¨®é¡ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠ
         for (int j = 0; j < (int)AtomType.None; j++)
         {
             if (atomWeight[j] > atomCount)
             {
-                onCreateAtomType.Invoke((AtomType)j); //Œ´q¶¬ƒCƒxƒ“ƒg‚ğ”­‰Î
+                onCreateAtomType.Invoke((AtomType)j); //åŸå­ç”Ÿæˆã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™ºç«
                 break;
             }
             atomCount -= atomWeight[j];
         }
     }
-    public void CalcPoint(ref PointSet pointSet, int atomCount, int formulaPoint, int chainCount, int comboCount) //“¾“_‚ÌŒvZ
+    public void CalcPoint(ref PointSet pointSet, int atomCount, int formulaPoint, int chainCount, int comboCount) //å¾—ç‚¹ã®è¨ˆç®—
     {
-        //“¾“_‚ÌŒvZ
-        chainCount = Mathf.Min(chainCount, ChainPointRatesLength - 1); //˜A½”‚ğXV
-        comboCount = Mathf.Min(comboCount, ComboPointRatesLength - 1); //ƒRƒ“ƒ{”‚ğXV
-        pointSet.AtomCount = atomCount; //Œ´q‚Ì”‚ğƒZƒbƒg
-        pointSet.FormulaPoint = formulaPoint; //‰»Šw®‚Ì“¾“_‚ğƒZƒbƒg
-        pointSet.ChainRate = chainPointRates[chainCount]; //˜A½”‚É‰‚¶‚½”{—¦
-        pointSet.ComboRate = comboPointRates[comboCount]; //ƒRƒ“ƒ{”‚É‰‚¶‚½”{—¦
-        pointSet.Point = atomCount * formulaPoint * pointSet.ChainRate * pointSet.ComboRate; //“¾“_‚ğŒvZ
+        //å¾—ç‚¹ã®è¨ˆç®—
+        chainCount = Mathf.Min(chainCount, ChainPointRatesLength - 1); //é€£é–æ•°ã‚’æ›´æ–°
+        comboCount = Mathf.Min(comboCount, ComboPointRatesLength - 1); //ã‚³ãƒ³ãƒœæ•°ã‚’æ›´æ–°
+        pointSet.AtomCount = atomCount; //åŸå­ã®æ•°ã‚’ã‚»ãƒƒãƒˆ
+        pointSet.FormulaPoint = formulaPoint; //åŒ–å­¦å¼ã®å¾—ç‚¹ã‚’ã‚»ãƒƒãƒˆ
+        pointSet.ChainRate = chainPointRates[chainCount]; //é€£é–æ•°ã«å¿œã˜ãŸå€ç‡
+        pointSet.ComboRate = comboPointRates[comboCount]; //ã‚³ãƒ³ãƒœæ•°ã«å¿œã˜ãŸå€ç‡
+        pointSet.Point = atomCount * formulaPoint * pointSet.ChainRate * pointSet.ComboRate; //å¾—ç‚¹ã‚’è¨ˆç®—
     }
     public void PassDisturbance(int num, PlayerBase player, Vector3 center)
     {
-        if (players[0] == player) players[1].GotDisturbanceNumber(num, center).Forget(); //ƒvƒŒƒCƒ„[1‚Ì‚¶‚á‚ÜŒ´q”‚ğİ’è
-        else players[0].GotDisturbanceNumber(num, center).Forget(); //ƒvƒŒƒCƒ„[0‚Ì‚¶‚á‚ÜŒ´q”‚ğİ’è 
+        if (players[0] == player) players[1].GotDisturbanceNumber(num, center).Forget(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼1ã®ã˜ã‚ƒã¾åŸå­æ•°ã‚’è¨­å®š
+        else players[0].GotDisturbanceNumber(num, center).Forget(); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼0ã®ã˜ã‚ƒã¾åŸå­æ•°ã‚’è¨­å®š 
     }
     public void InstantiateDisturbance()
     {
-        AtomObject atomObject = Instantiate(atomPrefab, stockAtoms.transform); //Œ´q‚ğƒCƒ“ƒXƒ^ƒ“ƒX‰»
+        AtomObject atomObject = Instantiate(atomPrefab, stockAtoms.transform); //åŸå­ã‚’ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹åŒ–
         atomObject.Set(disturbanceAtomColor, disturbanceAtom);
         atomObject.UnEnabled();
-        atomObject.transform.localScale *= DisturbancAtomsSize; //‚¨‚¶‚á‚ÜŒ´q‚ÌƒTƒCƒY‚ğ•ÏX
+        atomObject.transform.localScale *= DisturbancAtomsSize; //ãŠã˜ã‚ƒã¾åŸå­ã®ã‚µã‚¤ã‚ºã‚’å¤‰æ›´
         DisturbanceAtomObjects.Add(atomObject);
     }
     public void GameOver(PlayerBase player)
     {
-        SceneManager.LoadScene("Main"); //ƒQ[ƒ€ƒI[ƒo[‚ÉƒV[ƒ“‚ğƒŠƒ[ƒh
+        SceneManager.LoadScene("Main"); //ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚ã«ã‚·ãƒ¼ãƒ³ã‚’ãƒªãƒ­ãƒ¼ãƒ‰
     }
-    #endregion ŒöŠJƒƒ\ƒbƒh
+    #endregion å…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
 
-    #region ”ñŒöŠJƒƒ\ƒbƒh
-    private void Init() //ƒQ[ƒ€‚Ì‰Šú‰»
+    #region éå…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
+    private void Init() //ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–
     {
-        cts = new CancellationTokenSource(); //ƒLƒƒƒ“ƒZƒ‹ƒg[ƒNƒ“‚ğ‰Šú‰»
-        gameTime = 0f; //ƒQ[ƒ€ŠÔ‚ğ‰Šú‰»
-        players = FindObjectsByType<PlayerBase>(FindObjectsSortMode.None); //ƒvƒŒƒCƒ„[‚ğæ“¾
-        int[] atomCount = new int[(int)AtomType.None]; //Œ´q‚Ì”‚ğ‰Šú‰»
+        cts = new CancellationTokenSource(); //ã‚­ãƒ£ãƒ³ã‚»ãƒ«ãƒˆãƒ¼ã‚¯ãƒ³ã‚’åˆæœŸåŒ–
+        gameTime = 0f; //ã‚²ãƒ¼ãƒ æ™‚é–“ã‚’åˆæœŸåŒ–
+        players = FindObjectsByType<PlayerBase>(FindObjectsSortMode.None); //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å–å¾—
+        int[] atomCount = new int[(int)AtomType.None]; //åŸå­ã®æ•°ã‚’åˆæœŸåŒ–
         foreach (var formula in Formulas)
         {
-            int count = 0; //Œ´q‚Ì”‚ğ‰Šú‰»
+            int count = 0; //åŸå­ã®æ•°ã‚’åˆæœŸåŒ–
             foreach (var atom in formula.AtomDictionary)
             {
-                count += atom.Value; //‘Œ´q‚Ì”‚ğƒJƒEƒ“ƒg
-                atomCount[(int)atom.Key] += atom.Value; //Œ´q‚Ì”‚ğƒJƒEƒ“ƒg
+                count += atom.Value; //ç·åŸå­ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
+                atomCount[(int)atom.Key] += atom.Value; //åŸå­ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
             }
         }
-        //ƒ{[ƒiƒX‰»Šw®‚ğŒˆ‚ß‚é
-        //atomCount‚Ì”‚ªbonusFormula‚Ì”‚æ‚è‘å‚«‚¢‰»Šw®‚©‚çAbonusFormula‚ğƒ‰ƒ“ƒ_ƒ€‚É‘I‘ğ
+        //ãƒœãƒ¼ãƒŠã‚¹åŒ–å­¦å¼ã‚’æ±ºã‚ã‚‹
+        //atomCountã®æ•°ãŒbonusFormulaã®æ•°ã‚ˆã‚Šå¤§ãã„åŒ–å­¦å¼ã‹ã‚‰ã€bonusFormulaã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«é¸æŠ
         var selectedList = Formulas.Where(a => a.AtomCount >= bonusAtomMin).ToArray();
         if (selectedList.Length > 0)
         {
-            var bonusIndex = UnityEngine.Random.Range(0, selectedList.Length); // Unity‚ÌRandom
-            bonusFormula = selectedList[bonusIndex]; //ƒ{[ƒiƒX‰»Šw®‚ğ‘I‘ğ
+            var bonusIndex = UnityEngine.Random.Range(0, selectedList.Length); // Unityã®Random
+            bonusFormula = selectedList[bonusIndex]; //ãƒœãƒ¼ãƒŠã‚¹åŒ–å­¦å¼ã‚’é¸æŠ
         }
-        WeightPerLevel(atomCount); //Œ´q‚Ìd‚İ‚ğƒŒƒxƒ‹‚É‰‚¶‚Äİ’è
+        WeightPerLevel(atomCount); //åŸå­ã®é‡ã¿ã‚’ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ã¦è¨­å®š
         DisturbanceAtomObjects = new List<AtomObject>(20);
         for (int i = 0; i < 20; i++)
         {
@@ -381,12 +382,12 @@ public class MainManager : MonoBehaviour
     private void WeightPerLevel(in int[] atomCount)
     {
         atomWeight = new int[(int)AtomType.None];
-        //‘‡d‚İ‚ğ‰Šú‰»
+        //ç·åˆé‡ã¿ã‚’åˆæœŸåŒ–
         fullWeight = 0;
         for (int i = 0; i < (int)AtomType.None; i++)
         {
-            if (i == (int)disturbanceAtom) continue; //‚¨‚¶‚á‚ÜŒ´q‚Ìd‚İ‚ğ0‚É‚·‚é
-            //Œ´q‚Ìd‚İ‚ğƒŒƒxƒ‹‚É‰‚¶‚Äİ’è
+            if (i == (int)disturbanceAtom) continue; //ãŠã˜ã‚ƒã¾åŸå­ã®é‡ã¿ã‚’0ã«ã™ã‚‹
+            //åŸå­ã®é‡ã¿ã‚’ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ã¦è¨­å®š
             if (Level == 0)
             {
                 atomWeight[i] = atomCount[i] switch
@@ -421,15 +422,15 @@ public class MainManager : MonoBehaviour
                     _ => 1,
                 };
             }
-            //‘‡d‚İ‚ğŒvZ
+            //ç·åˆé‡ã¿ã‚’è¨ˆç®—
             fullWeight += atomWeight[i];
         }
-    } //Œ´q‚Ìd‚İ‚ğƒŒƒxƒ‹‚É‰‚¶‚Äİ’è‚·‚éƒƒ\ƒbƒh
+    } //åŸå­ã®é‡ã¿ã‚’ãƒ¬ãƒ™ãƒ«ã«å¿œã˜ã¦è¨­å®šã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     static public Color GetAtomColor(AtomType atomType)
     {
-        var atomGroup = AtomGroupHelper.atomGroups[atomType]; //Œ´q‚ÌƒOƒ‹[ƒv‚ğæ“¾
+        var atomGroup = AtomGroupHelper.atomGroups[atomType]; //åŸå­ã®ã‚°ãƒ«ãƒ¼ãƒ—ã‚’å–å¾—
         return groupColors[atomGroup];
-    } //Œ´q‚ÌF‚ğæ“¾
+    } //åŸå­ã®è‰²ã‚’å–å¾—
     public void Pause()
     {
         if (CurrentState == State.Pause)
@@ -440,49 +441,49 @@ public class MainManager : MonoBehaviour
         {
             CurrentState = State.Pause;
         }
-    } //ƒ|[ƒY
+    } //ãƒãƒ¼ã‚º
     async UniTaskVoid Countdown()
     {
-        //ƒJƒEƒ“ƒgƒ_ƒEƒ“ˆ—
+        //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³å‡¦ç†
         for (int i = 0; i < players.Length; i++)
         {
-            players[i].PlayCountdownAsync().Forget(); //ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ÌƒeƒLƒXƒg‚ğƒZƒbƒg
+            players[i].PlayCountdownAsync().Forget(); //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã®ãƒ†ã‚­ã‚¹ãƒˆã‚’ã‚»ãƒƒãƒˆ
         }
-        await UniTask.WaitForSeconds(3f, ignoreTimeScale: false, cancellationToken: cts.Token); //ƒJƒEƒ“ƒgƒ_ƒEƒ“‚Ì‘Ò‹@
-        CurrentState = State.Play; //ƒJƒEƒ“ƒgƒ_ƒEƒ“I—¹ŒãAó‘Ô‚ğPlay‚É•ÏX
+        await UniTask.WaitForSeconds(3f, ignoreTimeScale: false, cancellationToken: cts.Token); //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã®å¾…æ©Ÿ
+        CurrentState = State.Play; //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³çµ‚äº†å¾Œã€çŠ¶æ…‹ã‚’Playã«å¤‰æ›´
         for (int i = 0; i < players.Length; i++)
         {
             players[i].SetStart();
         }
-    } //ƒJƒEƒ“ƒgƒ_ƒEƒ“‚ğs‚¤ƒRƒ‹[ƒ`ƒ“   
+    } //ã‚«ã‚¦ãƒ³ãƒˆãƒ€ã‚¦ãƒ³ã‚’è¡Œã†ã‚³ãƒ«ãƒ¼ãƒãƒ³   
     void UpdateGameTime()
     {
-        // Playó‘Ô‚Ìˆ—
-        gameTime += Time.deltaTime; //ƒQ[ƒ€ŠÔ‚ğXV
+        // PlayçŠ¶æ…‹ã®å‡¦ç†
+        gameTime += Time.deltaTime; //ã‚²ãƒ¼ãƒ æ™‚é–“ã‚’æ›´æ–°
         updateDropCount += Time.deltaTime;
         if (updateDropCount >= updateDropTime)
         {
             dropTime *= updateDropTimeRate;
             updateDropCount -= updateDropTime;
         }
-    } //ƒQ[ƒ€ŠÔ‚ÌXV
-    #endregion ”ñŒöŠJƒƒ\ƒbƒh
+    } //ã‚²ãƒ¼ãƒ æ™‚é–“ã®æ›´æ–°
+    #endregion éå…¬é–‹ãƒ¡ã‚½ãƒƒãƒ‰
 
-    #region ŒöŠJƒNƒ‰ƒX
-    public class FormulaObject //‰»Šw®‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+    #region å…¬é–‹ã‚¯ãƒ©ã‚¹
+    public class FormulaObject //åŒ–å­¦å¼ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
     {
-        public string Name { get; private set; } //‰»Šw®‚Ì–¼‘O
-        public string Formula { get; private set; }//‰»Šw®
-        public Dictionary<AtomType, int> AtomDictionary { get; private set; } //Œ´q‚Ìí—Ş‚Æ‚»‚Ì”‚ğŠÇ—‚·‚é«‘
-        public int AtomCount { get; private set; }//Œ´q‚Ì”
-        public int Point { get; private set; } //“¾“_
+        public string Name { get; private set; } //åŒ–å­¦å¼ã®åå‰
+        public string Formula { get; private set; }//åŒ–å­¦å¼
+        public Dictionary<AtomType, int> AtomDictionary { get; private set; } //åŸå­ã®ç¨®é¡ã¨ãã®æ•°ã‚’ç®¡ç†ã™ã‚‹è¾æ›¸
+        public int AtomCount { get; private set; }//åŸå­ã®æ•°
+        public int Point { get; private set; } //å¾—ç‚¹
         public FormulaObject(string name, string formula, Dictionary<AtomType, int> atomDict)
         {
-            Name = name;@//‰»Šw®‚Ì–¼‘O‚ğİ’è
-            Formula = formula;@//‰»Šw®‚ğİ’è
-            AtomDictionary = atomDict;@//Œ´q‚Ìí—Ş‚Æ‚»‚Ì”‚ğİ’è
+            Name = name;ã€€//åŒ–å­¦å¼ã®åå‰ã‚’è¨­å®š
+            Formula = formula;ã€€//åŒ–å­¦å¼ã‚’è¨­å®š
+            AtomDictionary = atomDict;ã€€//åŸå­ã®ç¨®é¡ã¨ãã®æ•°ã‚’è¨­å®š
 
-            AtomCount = atomDict.Values.Sum(); //Œ´q‚Ì”‚ğƒJƒEƒ“ƒg
+            AtomCount = atomDict.Values.Sum(); //åŸå­ã®æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆ
             Point = atomDict.Sum(pair =>
             {
                 var group = AtomGroupHelper.GetGroup(pair.Key);
@@ -522,6 +523,7 @@ public class MainManager : MonoBehaviour
         { AtomType.Zn, AtomGroupType.TransitionMetal },
         { AtomType.Ag, AtomGroupType.TransitionMetal },
         { AtomType.Al, AtomGroupType.SimpleMetal },
+        { AtomType.Oj, AtomGroupType.None },
         { AtomType.None, AtomGroupType.None }
     };
 
@@ -529,14 +531,14 @@ public class MainManager : MonoBehaviour
         {
             return atomGroups.TryGetValue(atomType, out var group) ? group : AtomGroupType.None;
         }
-    } //Œ´q‚ğŠÇ—‚·‚éƒNƒ‰ƒX
-    public struct PointSet //“¾“_‚ğŠÇ—‚·‚é\‘¢‘Ì
+    } //åŸå­ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
+    public struct PointSet //å¾—ç‚¹ã‚’ç®¡ç†ã™ã‚‹æ§‹é€ ä½“
     {
-        public int Point; //“¾“_
-        public int FormulaPoint; //Šî‘b“¾“_
-        public int AtomCount; //Œ´q”
-        public int ChainRate; //˜A½”
-        public int ComboRate; //ƒRƒ“ƒ{”
+        public int Point; //å¾—ç‚¹
+        public int FormulaPoint; //åŸºç¤å¾—ç‚¹
+        public int AtomCount; //åŸå­æ•°
+        public int ChainRate; //é€£é–æ•°
+        public int ComboRate; //ã‚³ãƒ³ãƒœæ•°
     }
-    #endregion ŒöŠJƒNƒ‰ƒX
+    #endregion å…¬é–‹ã‚¯ãƒ©ã‚¹
 }

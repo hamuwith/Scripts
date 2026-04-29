@@ -1,25 +1,25 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
-//–¢À‘•‚Í'***'‚Å•\‹L
+//æœªå®Ÿè£…ã¯'***'ã§è¡¨è¨˜
 
 public class PlayerManager : PlayerBase
 {
-    [SerializeField] InputActionAsset inputActions; //“ü—ÍƒAƒNƒVƒ‡ƒ“ƒAƒZƒbƒg
-    [SerializeField] float moveSensitivity; //“ü—Í‚ÌŠ´“x
-    Vector2 moveInput; //ˆÚ“®“ü—Í
-    float rotateInput; //‰ñ“]“ü—Í
-    float continuousRightCount; //˜A‘±‰EƒJƒEƒ“ƒg
-    float continuousLeftCount; //˜A‘±¶ƒJƒEƒ“ƒg
-    float continuousRightRotateCount; //˜A‘±‰E‰ñ“]ƒJƒEƒ“ƒg
-    float continuousLeftRotateCount; //˜A‘±¶‰ñ“]ƒJƒEƒ“ƒg
-    public override void Start0(int id) //ƒvƒŒƒCƒ„[‚Ì‰Šú‰»‚ğs‚¤ƒƒ\ƒbƒh
+    [SerializeField] InputActionAsset inputActions; //å…¥åŠ›ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚¢ã‚»ãƒƒãƒˆ
+    [SerializeField] float moveSensitivity; //å…¥åŠ›ã®æ„Ÿåº¦
+    Vector2 moveInput; //ç§»å‹•å…¥åŠ›
+    float rotateInput; //å›è»¢å…¥åŠ›
+    float continuousRightCount; //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆ
+    float continuousLeftCount; //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆ
+    float continuousRightRotateCount; //é€£ç¶šå³å›è»¢ã‚«ã‚¦ãƒ³ãƒˆ
+    float continuousLeftRotateCount; //é€£ç¶šå·¦å›è»¢ã‚«ã‚¦ãƒ³ãƒˆ
+    public override void Start0(int id) //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®åˆæœŸåŒ–ã‚’è¡Œã†ãƒ¡ã‚½ãƒƒãƒ‰
     {
         base.Start0(id);
-        //‘€ì‚Ì‰Šú‰»
+        //æ“ä½œã®åˆæœŸåŒ–
         SetInputEvent();
     }
-    private void SetInputEvent() //“ü—ÍƒCƒxƒ“ƒg‚ğİ’è‚·‚éƒƒ\ƒbƒh
+    private void SetInputEvent() //å…¥åŠ›ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
         var actionMaps = inputActions.actionMaps.ToDictionary(x => x.name, x => x);
         actionMaps.TryGetValue("Player", out var playerMap);
@@ -35,86 +35,86 @@ public class PlayerManager : PlayerBase
         rotation.canceled += context => rotateInput = context.ReadValue<float>();
         pause.performed += context => M.Pause();
     }
-    protected override void PlayMove() //ˆÚ“®“ü—Í‚ğˆ—‚·‚éƒƒ\ƒbƒh
+    protected override void PlayMove() //ç§»å‹•å…¥åŠ›ã‚’å‡¦ç†ã™ã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
     {
-        //‰ñ“]ˆ—
+        //å›è»¢å‡¦ç†
         if (rotateInput > 0.5f)
         {
-            //˜A‘±‰E‰ñ“]ƒJƒEƒ“ƒg‚ğXV
+            //é€£ç¶šå³å›è»¢ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             continuousRightRotateCount += Time.deltaTime;
-            //˜A‘±‰EƒJƒEƒ“ƒg‚ªˆê’èŠÔ‚ğ’´‚¦‚½‚ç‰EˆÚ“®
+            //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šæ™‚é–“ã‚’è¶…ãˆãŸã‚‰å³ç§»å‹•
             if (continuousRightRotateCount >= M.ContinuousMoveTime)
             {
                 Rotation(Direction.Right);
-                continuousRightRotateCount = 0; //˜A‘±‰EƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+                continuousRightRotateCount = 0; //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             }
         }
         else
         {
-            //˜A‘±‰E‰ñ“]ƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+            //é€£ç¶šå³å›è»¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             continuousRightRotateCount = M.ContinuousMoveTime;
         }
         if (rotateInput < -0.5f)
         {
-            //˜A‘±¶‰ñ“]ƒJƒEƒ“ƒg‚ğXV
+            //é€£ç¶šå·¦å›è»¢ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             continuousLeftRotateCount += Time.deltaTime;
-            //˜A‘±¶‰ñ“]ƒJƒEƒ“ƒg‚ªˆê’èŠÔ‚ğ’´‚¦‚½‚ç¶ˆÚ“®
+            //é€£ç¶šå·¦å›è»¢ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šæ™‚é–“ã‚’è¶…ãˆãŸã‚‰å·¦ç§»å‹•
             if (continuousLeftRotateCount >= M.ContinuousMoveTime)
             {
                 Rotation(Direction.Left);
-                continuousLeftRotateCount = 0; //˜A‘±¶ƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+                continuousLeftRotateCount = 0; //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             }
         }
         else
         {
-            //˜A‘±¶‰ñ“]ƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+            //é€£ç¶šå·¦å›è»¢ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             continuousLeftRotateCount = M.ContinuousMoveTime;
         }
-        //ˆÚ“®ˆ—
+        //ç§»å‹•å‡¦ç†
         if (moveInput.x > moveSensitivity)
         {
-            //˜A‘±‰EƒJƒEƒ“ƒg‚ğXV
+            //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             continuousRightCount += Time.deltaTime;
-            //˜A‘±‰EƒJƒEƒ“ƒg‚ªˆê’èŠÔ‚ğ’´‚¦‚½‚ç‰EˆÚ“®
+            //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šæ™‚é–“ã‚’è¶…ãˆãŸã‚‰å³ç§»å‹•
             if (continuousRightCount >= M.ContinuousMoveTime)
             {
-                Move(Direction.Right);//, currentAtomPositions, stageAtom); //Œ´q‚ğ‰E‚ÉˆÚ“®
-                continuousRightCount = 0; //˜A‘±‰EƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+                Move(Direction.Right);//, currentAtomPositions, stageAtom); //åŸå­ã‚’å³ã«ç§»å‹•
+                continuousRightCount = 0; //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             }
         }
         else
         {
-            //˜A‘±‰EƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+            //é€£ç¶šå³ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             continuousRightCount = M.ContinuousMoveTime;
         }
         if (moveInput.x < -moveSensitivity)
         {
-            //˜A‘±¶ƒJƒEƒ“ƒg‚ğXV
+            //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             continuousLeftCount += Time.deltaTime;
-            //˜A‘±¶ƒJƒEƒ“ƒg‚ªˆê’èŠÔ‚ğ’´‚¦‚½‚ç¶ˆÚ“®
+            //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆãŒä¸€å®šæ™‚é–“ã‚’è¶…ãˆãŸã‚‰å·¦ç§»å‹•
             if (continuousLeftCount >= M.ContinuousMoveTime)
             {
-                Move(Direction.Left);//, currentAtomPositions, stageAtom); //Œ´q‚ğ¶‚ÉˆÚ“®
-                continuousLeftCount = 0; //˜A‘±¶ƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+                Move(Direction.Left);//, currentAtomPositions, stageAtom); //åŸå­ã‚’å·¦ã«ç§»å‹•
+                continuousLeftCount = 0; //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             }
         }
         else
         {
-            //˜A‘±¶ƒJƒEƒ“ƒg‚ğƒŠƒZƒbƒg
+            //é€£ç¶šå·¦ã‚«ã‚¦ãƒ³ãƒˆã‚’ãƒªã‚»ãƒƒãƒˆ
             continuousLeftCount = M.ContinuousMoveTime;
         }
         float dropValue = 0;
         if (moveInput.y < -moveSensitivity)
         {
-            //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ğXV
+            //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             dropValue = M.DownAcceleration * Time.deltaTime;
         }
         else
         {
-            //ƒhƒƒbƒvƒJƒEƒ“ƒg‚ğXV
+            //ãƒ‰ãƒ­ãƒƒãƒ—ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°
             dropValue = Time.deltaTime;
         }
-        DropStep(dropValue); //ƒhƒƒbƒvˆ—
+        DropStep(dropValue); //ãƒ‰ãƒ­ãƒƒãƒ—å‡¦ç†
     }
 }
 

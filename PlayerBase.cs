@@ -460,24 +460,44 @@ public class PlayerBase : MonoBehaviour
     }
     async UniTask AtomDelete() //原子の削除
     {
-        //原子の削除
+        HashSet<Vector2Int> deleteAtoms = new HashSet<Vector2Int>();
         foreach (var atomObjectHash in atomObjectHashs)
         {
-            //揃った原子を削除
-            foreach (var atom in atomObjectHash.Value)
+            deleteAtoms.UnionWith(atomObjectHash.Value);
+        }
+        AddAdjacentDisturbanceAtoms(deleteAtoms);
+        foreach (var atom in deleteAtoms)
+        {
+            if (stageAtom[atom.x, atom.y] != null)
             {
-                if (stageAtom[atom.x, atom.y] != null)
-                {
-                    atomObjectPool.Release(stageAtom[atom.x, atom.y]); //原子をプールに戻す
-                    stageAtom[atom.x, atom.y] = null;
-                    stageAtomF[atom.x + atom.y * M.Size.x] = 0; //原子番号を設定
-                    if (dropAtomYs[atom.x] > atom.y) dropAtomYs[atom.x] = atom.y;
-                }
+                atomObjectPool.Release(stageAtom[atom.x, atom.y]); //原子をプールに戻す
+                stageAtom[atom.x, atom.y] = null;
+                stageAtomF[atom.x + atom.y * M.Size.x] = 0; //原子番号を設定
+                if (dropAtomYs[atom.x] > atom.y) dropAtomYs[atom.x] = atom.y;
             }
         }
-        //揃った原子を削除
         atomObjectHashs.Clear();
         await UniTask.WaitForSeconds(1.0f, ignoreTimeScale: false, cancellationToken: cts.Token); //表示時間
+    }
+    void AddAdjacentDisturbanceAtoms(HashSet<Vector2Int> deleteAtoms)
+    {
+        int width = M.Size.x;
+        int height = M.Size.y;
+        foreach (var atom in deleteAtoms.ToArray())
+        {
+            TryAddDisturbanceAtom(deleteAtoms, atom.x + 1, atom.y, width, height);
+            TryAddDisturbanceAtom(deleteAtoms, atom.x - 1, atom.y, width, height);
+            TryAddDisturbanceAtom(deleteAtoms, atom.x, atom.y + 1, width, height);
+            TryAddDisturbanceAtom(deleteAtoms, atom.x, atom.y - 1, width, height);
+        }
+    }
+    void TryAddDisturbanceAtom(HashSet<Vector2Int> deleteAtoms, int x, int y, int width, int height)
+    {
+        if (x < 0 || x >= width || y < 0 || y >= height) return;
+        if (stageAtom[x, y] == null) return;
+        if (stageAtom[x, y].AtomType != M.DisturbanceAtom) return;
+
+        deleteAtoms.Add(new Vector2Int(x, y));
     }
     async UniTaskVoid FormulaText(string formulaName) //化学式表示
     {

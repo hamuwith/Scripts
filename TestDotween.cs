@@ -39,7 +39,7 @@ public interface IDOTweenTest
 {
     Sequence DOTweenTest();
 }
-//ƒIƒuƒWƒFƒNƒg‚Ì‰Šú’lŠÇ—
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸå€¤ç®¡ç†
 [System.Serializable]
 public class StartData
 {
@@ -63,12 +63,12 @@ public class StartData
         textMeshPro = gameObject.GetComponent<TextMeshPro>();
         image = gameObject.GetComponent<Image>();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        //‰Šú’l‚ğæ“¾
+        //åˆæœŸå€¤ã‚’å–å¾—
         position = gameObject.transform.position;
         scale = gameObject.transform.localScale;
         rotate = gameObject.transform.localEulerAngles;
         isActive = gameObject.activeSelf;
-        //ƒ^[ƒQƒbƒgƒIƒuƒWƒFƒNƒg‚ªnull‚Å‚È‚¢ê‡A‰Šú’l‚ğæ“¾
+        //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullã§ãªã„å ´åˆã€åˆæœŸå€¤ã‚’å–å¾—
         if (textMeshProUGUI != null)
         {
             text = textMeshProUGUI.text;
@@ -97,11 +97,11 @@ public class StartData
     public void GetStartData()
     {
         if (!gameObject.activeSelf) gameObject.SetActive(true);
-        //‰Šú’l‚ğİ’è
+        //åˆæœŸå€¤ã‚’è¨­å®š
         gameObject.transform.position = position;
         gameObject.transform.localScale = scale;
         gameObject.transform.localEulerAngles = rotate;
-        //ƒ^[ƒQƒbƒgƒIƒuƒWƒFƒNƒg‚ªnull‚Å‚È‚¢ê‡A‰Šú’l‚ğİ’è
+        //ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒnullã§ãªã„å ´åˆã€åˆæœŸå€¤ã‚’è¨­å®š
         if (textMeshProUGUI != null)
         {
             textMeshProUGUI.text = text;

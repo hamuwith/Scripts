@@ -3,11 +3,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    /// <summary> ƒVƒ“ƒOƒ‹ƒgƒ“ƒCƒ“ƒXƒ^ƒ“ƒX </summary>
+    /// <summary> ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ </summary>
     public static GameManager Instance { get; private set; }
-    /// <summary> ƒV[ƒ“‚Ìó‘Ô‚ğŠÇ—‚·‚é•Ï” </summary>
+    /// <summary> ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹å¤‰æ•° </summary>
     [SerializeField] SceneState currectScene;
-    /// <summary> ƒV[ƒ“‚Ìó‘Ô‚ğŠÇ—‚·‚é—ñ‹“Œ^ </summary>
+    /// <summary> ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹åˆ—æŒ™å‹ </summary>
     enum SceneState
     {
         Title,
@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     }
     private void Awake()
     {
-        //ƒCƒ“ƒXƒ^ƒ“ƒX‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍAŒ»İ‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğİ’è‚µA”jŠü‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+        //ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã€ç¾åœ¨ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¨­å®šã—ã€ç ´æ£„ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
         if (Instance == null)
         {
             Instance = this;
@@ -29,38 +29,38 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        //ƒV[ƒ“‚ªƒ[ƒh‚³‚ê‚½‚Æ‚«‚ÌƒCƒxƒ“ƒg‚ğ“o˜^
+        //ã‚·ãƒ¼ãƒ³ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸã¨ãã®ã‚¤ãƒ™ãƒ³ãƒˆã‚’ç™»éŒ²
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
     /// <summary>
-    /// ƒV[ƒ“‚Ì‘JˆÚ‚ğs‚¤
+    /// ã‚·ãƒ¼ãƒ³ã®é·ç§»ã‚’è¡Œã†
     /// </summary>
-    /// <param name="sceneState">ƒV[ƒ“ó‘Ô</param>
+    /// <param name="sceneState">ã‚·ãƒ¼ãƒ³çŠ¶æ…‹</param>
     private void LoadScene(SceneState sceneState)
     {
-        //ƒV[ƒ“‚ğID‚Å“Ç‚İ‚İ
+        //ã‚·ãƒ¼ãƒ³ã‚’IDã§èª­ã¿è¾¼ã¿
         SceneManager.LoadScene((int)sceneState);
     }
     /// <summary>
-    /// ƒV[ƒ“‚ªƒ[ƒh‚³‚ê‚½‚Æ‚«‚Ìˆ—
+    /// ã‚·ãƒ¼ãƒ³ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚ŒãŸã¨ãã®å‡¦ç†
     /// </summary>
-    /// <param name="scene">ƒV[ƒ“</param>
-    /// <param name="mode">ƒ‚[ƒh</param>
+    /// <param name="scene">ã‚·ãƒ¼ãƒ³</param>
+    /// <param name="mode">ãƒ¢ãƒ¼ãƒ‰</param>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        currectScene = (SceneState)scene.buildIndex; // Œ»İ‚ÌƒV[ƒ“‚Ìó‘Ô‚ğXV
+        currectScene = (SceneState)scene.buildIndex; // ç¾åœ¨ã®ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã‚’æ›´æ–°
 
-        //ƒV[ƒ“‚Ìó‘Ô‚É‰‚¶‚½ˆ—‚ğs‚¤
+        //ã‚·ãƒ¼ãƒ³ã®çŠ¶æ…‹ã«å¿œã˜ãŸå‡¦ç†ã‚’è¡Œã†
         switch (scene.buildIndex)
         {
-            case 0: // ƒ^ƒCƒgƒ‹ƒV[ƒ“
-                Debug.Log("ƒ^ƒCƒgƒ‹ƒV[ƒ“‚ªƒ[ƒh‚³‚ê‚Ü‚µ‚½");
+            case 0: // ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
+                Debug.Log("ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸ");
                 break;
-            case 1: // ƒƒCƒ“ƒV[ƒ“
-                Debug.Log("ƒƒCƒ“ƒV[ƒ“‚ªƒ[ƒh‚³‚ê‚Ü‚µ‚½");
+            case 1: // ãƒ¡ã‚¤ãƒ³ã‚·ãƒ¼ãƒ³
+                Debug.Log("ãƒ¡ã‚¤ãƒ³ã‚·ãƒ¼ãƒ³ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸ");
                 break;
-            case 2: // ƒXƒg[ƒŠ[ƒV[ƒ“
-                Debug.Log("ƒXƒg[ƒŠ[ƒV[ƒ“‚ªƒ[ƒh‚³‚ê‚Ü‚µ‚½");
+            case 2: // ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ã‚·ãƒ¼ãƒ³
+                Debug.Log("ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ã‚·ãƒ¼ãƒ³ãŒãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸ");
                 break;
         }
     }
